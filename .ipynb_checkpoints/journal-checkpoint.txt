@@ -1,0 +1,25 @@
+Journal de bord (might be in frenglish)
+=======================================
+
+To do:
+[ ] recycle MonoalphabeticDecoder and cryptoUtils
+[ ] create a jupyter notebook "sandbox" to try things using files in the project
+[X] add txt file option for input
+[ ] add streaming option for input
+[ ] add feature that support binary files and potentially other alphabets
+[ ] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
+
+
+General idea:
+    1. Modify something in project
+    2. From the terminal at the root of cryptolab: pip install -e
+    3. Try typing a command. For example: cryptolab cipher caesar "HELLO" 3
+    
+    
+2026.04.03 Creation of the repo and the architecture of the project. Basics examples implemented with AI to have a guideline. Understood for most of the files what they are for. Lot of things to do. Looking forward to it.
+
+2026.04.04 Implemented bacon.py and bacward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
+
+2026.04.05 Implemented vigenere cipher.
+
+2026.04.06 Implemented monoalphabetic cipher.

@@ -1,0 +1,55 @@
+Initial layout (2026.04.03 12h)
+Last updated: none
+
+cryptolab/
+│
+├── pyproject.toml          # Project metadata & dependencies
+├── README.md
+├── LICENSE
+├── .gitignore
+│
+├── src/
+│   └── cryptolab/          # Main package (moved under src/)
+│       ├── __init__.py
+│       │
+│       ├── cli/            # CLI entrypoint & commands
+│       │   ├── __init__.py
+│       │   ├── main.py     # Main CLI app (argparse / typer / click)
+│       │   ├── cipher_cmds.py
+│       │   └── decipher_cmds.py
+│       │
+│       ├── ciphers/        # Cipher implementations
+│       │   ├── __init__.py
+│       │   ├── monoalphabetic.py
+│       │   ├── polyalphabetic.py
+│       │   ├── transposition.py
+│       │   └── common.py   # Shared helpers (alphabet, shifts, etc.)
+│       │
+│       ├── analysis/       # Cryptanalysis tools
+│       │   ├── __init__.py
+│       │   ├── frequency.py
+│       │   ├── index_of_coincidence.py
+│       │   ├── kasiski.py
+│       │   └── scoring.py  # Language scoring (English likelihood, etc.)
+│       │
+│       ├── utils/          # Generic utilities
+│       │   ├── __init__.py
+│       │   ├── text.py     # cleaning, normalization
+│       │   ├── io.py       # file handling
+│       │   └── logging.py
+│       │
+│       └── data/           # Static data files
+│           ├── english_freq.json
+│           └── wordlists/
+│
+├── tests/                  # Unit tests (import from installed package)
+│   ├── test_monoalphabetic.py
+│   ├── test_analysis.py
+│   └── test_cli.py
+│
+├── examples/               # Sample ciphertexts / usage demos
+│   ├── caesar.txt
+│   └── vigenere.txt
+│
+└── scripts/                # Dev scripts (optional)
+    └── benchmark.py
