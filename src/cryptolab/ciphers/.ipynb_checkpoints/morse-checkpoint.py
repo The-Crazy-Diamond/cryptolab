@@ -1,41 +1,59 @@
-"""
-Cipher plugin template for Cryptolab.
-
-To add a new cipher:
-1. Copy this file (with "cp _template.py playfair.py")
-2. Rename it (e.g. vigenere.py, playfair.py)
-3. Update NAME (should be the same as the filename whitout the .py extension)
-4. Implement encrypt/decrypt
-"""
-
-# Unique name used by the CLI
 NAME = "morse"
-DESCRIPTION = "brief description of what is this cipher"
+DESCRIPTION = "Morse code."
 
+
+def morse_tables(key: str):
+    morse_coding = {}
+    morse_decoding = {}
+    
+    # setting the letters
+    morse_letters = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..']
+    
+    for i in range(26):
+        char,seq = chr(i + ord('A')), morse_letters[i]
+        morse_coding[char] = seq
+        morse_decoding[seq] = char
+    
+    # setting the numbers
+    morse_numbers = ['-----','.----','..---','...--','....-','.....','-....','--...','---..','----.']
+    for i in range(10):
+        seq = morse_numbers[i]
+        morse_coding[str(i)] = seq
+        morse_decoding[seq] = str(i)
+    
+    # setting special characters
+    
+        special = '.,?\'!/()&:;=+-_"$@'
+        morse_special = ['.-.-.-','--..--','..--..','.----.','-.-.--','-..-.','-.--.','-.--.-','.-...','---...','-.-.-.','-...-','.-.-.','-....-','..--.-','.-..-.','...-..-','.--.-.']
+        for i in range(len(special)):
+            char,seq = special[i],morse_special[i]
+            morse_coding[char] = seq
+            morse_decoding[seq] = char
+
+    return morse_coding, morse_decoding
 
 def encrypt(text: str, key: str) -> str:
-    """
-    Encrypt the given text using the provided key.
-
-    Args:
-        text: The plaintext input
-        key: Cipher key (format depends on cipher)
-
-    Returns:
-        Encrypted text (ciphertext)
-    """
-    raise NotImplementedError("Encrypt function not implemented")
-
+    morse_coding = morse_tables(key)[0]
+    space = '   ' #by default the separation between words is made of 3 spaces
+    morse_coding[' '] = space
+    return ''.join(morse_coding[char.upper()] + ' ' for char in text)
 
 def decrypt(text: str, key: str) -> str:
-    """
-    Decrypt the given text using the provided key.
-
-    Args:
-        text: The ciphertext input
-        key: Cipher key (format depends on cipher)
-
-    Returns:
-        Decrypted text (plaintext)
-    """
-    raise NotImplementedError("Decrypt function not implemented")
+    morse_decoding = morse_tables(key)[1]
+    space = '   ' #by default the separation between words is made of 3 spaces
+    morse_decoding[space] = ' '
+    start = 0
+    end = 1
+    text = ''
+    length = len(code)
+    code += ' '
+    while end <= length:
+        seq = code[start:end]           
+        if seq in morse_decoding and code[end] == ' ':
+            text += morse_decoding[seq]
+            start = end + 1
+            end = start + 1
+        else:
+            end += 1
+        
+    return text

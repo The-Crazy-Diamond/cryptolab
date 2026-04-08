@@ -14,12 +14,20 @@ General idea:
     1. Modify something in project
     2. From the terminal at the root of cryptolab: pip install -e
     3. Try typing a command. For example: cryptolab cipher caesar "HELLO" 3
-    
+
+Using git:
+    git init (first time only)
+    git status (to see the current state)
+    git add .
+    git commit -m "Add new cipher"
+    git push
     
 2026.04.03 Creation of the repo and the architecture of the project. Basics examples implemented with AI to have a guideline. Understood for most of the files what they are for. Lot of things to do. Looking forward to it.
 
-2026.04.04 Implemented bacon.py and bacward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
+2026.04.04 Implemented bacon.py and backward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
 
 2026.04.05 Implemented vigenere cipher.
 
 2026.04.06 Implemented monoalphabetic cipher.
+
+2026.04.07 Did git stuff locally and pushed to GitHub
