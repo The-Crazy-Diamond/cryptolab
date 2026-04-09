@@ -23,7 +23,7 @@ def bacon_tables(key: str):
         counter += 1
     return bacon, reverse_bacon    
 
-def encrypt(text: str, key: str) -> str: #default key should be AB and maybe optional parameters regarding spaces
+def encrypt(text: str, key: str = 'AB') -> str: #default key should be AB and maybe optional parameters regarding spaces
     bacon = bacon_tables(key)[0]
     space = ''
     # if spaces:
@@ -31,7 +31,7 @@ def encrypt(text: str, key: str) -> str: #default key should be AB and maybe opt
     return "".join(bacon[char] + space for char in text.lower())
 
 
-def decrypt(text: str, key: str) -> str:
+def decrypt(text: str, key: str = 'AB') -> str:
     reverse_bacon = bacon_tables(key)[1]
     # if spaces:
     #     text = "".join(char for char in text if char != ' ')

@@ -2,7 +2,7 @@ NAME = "morse"
 DESCRIPTION = "Morse code."
 
 
-def morse_tables(key: str):
+def morse_tables():
     morse_coding = {}
     morse_decoding = {}
     
@@ -32,14 +32,14 @@ def morse_tables(key: str):
 
     return morse_coding, morse_decoding
 
-def encrypt(text: str, key: str) -> str:
-    morse_coding = morse_tables(key)[0]
+def encrypt(text: str) -> str:
+    morse_coding = morse_tables()[0]
     space = '   ' #by default the separation between words is made of 3 spaces
     morse_coding[' '] = space
     return ''.join(morse_coding[char.upper()] + ' ' for char in text)
 
-def decrypt(text: str, key: str) -> str:
-    morse_decoding = morse_tables(key)[1]
+def decrypt(text: str) -> str:
+    morse_decoding = morse_tables()[1]
     space = '   ' #by default the separation between words is made of 3 spaces
     morse_decoding[space] = ' '
     start = 0

@@ -31,3 +31,5 @@ Using git:
 2026.04.06 Implemented monoalphabetic cipher.
 
 2026.04.07 Did git stuff locally and pushed to GitHub
+
+2026.04.08 Implemented morse code. Dealing with ciphers having different key setups becomes annoying. Should work on this as a priority.

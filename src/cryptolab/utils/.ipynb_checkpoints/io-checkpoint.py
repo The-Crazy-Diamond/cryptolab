@@ -1,6 +1,5 @@
 from pathlib import Path
 
-
 def load_input(input_data: str) -> str:
     """Load text from a file or return raw input."""
     
