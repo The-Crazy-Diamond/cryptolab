@@ -7,7 +7,7 @@ To do:
 [X] add txt file option for input
 [ ] add streaming option for input
 [ ] add feature that support binary files and potentially other alphabets
-[ ] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
+[X] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
 
 
 General idea:
@@ -33,3 +33,5 @@ Using git:
 2026.04.07 Did git stuff locally and pushed to GitHub
 
 2026.04.08 Implemented morse code. Dealing with ciphers having different key setups becomes annoying. Should work on this as a priority.
+
+2026.04.09 Refactor CLI to support flexible cipher arguments (0, 1, or multiple keys). KeyError in bacon and cardan triliteral ciphers to correct.

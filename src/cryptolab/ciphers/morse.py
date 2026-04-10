@@ -1,59 +1,178 @@
+import warnings
+
 NAME = "morse"
 DESCRIPTION = "Morse code."
 
 
-def morse_tables():
-    morse_coding = {}
-    morse_decoding = {}
-    
-    # setting the letters
-    morse_letters = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..']
-    
-    for i in range(26):
-        char,seq = chr(i + ord('A')), morse_letters[i]
-        morse_coding[char] = seq
-        morse_decoding[seq] = char
-    
-    # setting the numbers
-    morse_numbers = ['-----','.----','..---','...--','....-','.....','-....','--...','---..','----.']
-    for i in range(10):
-        seq = morse_numbers[i]
-        morse_coding[str(i)] = seq
-        morse_decoding[seq] = str(i)
-    
-    # setting special characters
-    
-        special = '.,?\'!/()&:;=+-_"$@'
-        morse_special = ['.-.-.-','--..--','..--..','.----.','-.-.--','-..-.','-.--.','-.--.-','.-...','---...','-.-.-.','-...-','.-.-.','-....-','..--.-','.-..-.','...-..-','.--.-.']
-        for i in range(len(special)):
-            char,seq = special[i],morse_special[i]
-            morse_coding[char] = seq
-            morse_decoding[seq] = char
-
-    return morse_coding, morse_decoding
-
-def encrypt(text: str) -> str:
-    morse_coding = morse_tables()[0]
-    space = '   ' #by default the separation between words is made of 3 spaces
-    morse_coding[' '] = space
+def encrypt(text: str, space_symbol: str = '/') -> str:
+    morse_coding[' '] = space_symbol
     return ''.join(morse_coding[char.upper()] + ' ' for char in text)
 
-def decrypt(text: str) -> str:
-    morse_decoding = morse_tables()[1]
-    space = '   ' #by default the separation between words is made of 3 spaces
-    morse_decoding[space] = ' '
+def decrypt(text: str, space_symbol: str = '/') -> str:
+    morse_decoding[space_symbol] = ' '
     start = 0
     end = 1
-    text = ''
-    length = len(code)
-    code += ' '
+    plain = ''
+    length = len(text)
+    text += ' ' # this padding is necessary for indicating the end of the last scanned piece
     while end <= length:
-        seq = code[start:end]           
-        if seq in morse_decoding and code[end] == ' ':
-            text += morse_decoding[seq]
+        scan = text[start:end]
+        if scan == ' ': # if the scanned text is a space, just scan what's next
+            start += 1
+            end += 1
+        elif scan in morse_decoding and text[end] == ' ': 
+            plain += morse_decoding[scan]
             start = end + 1
             end = start + 1
         else:
             end += 1
-        
-    return text
+    if start + 1 != length:
+        warnings.warn('A part of the code was not decrypted.')
+    return plain
+
+morse_coding = {
+ 'A': '.-',
+ 'B': '-...',
+ 'C': '-.-.',
+ 'D': '-..',
+ 'E': '.',
+ 'F': '..-.',
+ 'G': '--.',
+ 'H': '....',
+ 'I': '..',
+ 'J': '.---',
+ 'K': '-.-',
+ 'L': '.-..',
+ 'M': '--',
+ 'N': '-.',
+ 'O': '---',
+ 'P': '.--.',
+ 'Q': '--.-',
+ 'R': '.-.',
+ 'S': '...',
+ 'T': '-',
+ 'U': '..-',
+ 'V': '...-',
+ 'W': '.--',
+ 'X': '-..-',
+ 'Y': '-.--',
+ 'Z': '--..',
+ '0': '-----',
+ '.': '.-.-.-',
+ ',': '--..--',
+ '?': '..--..',
+ "'": '.----.',
+ '!': '-.-.--',
+ '/': '-..-.',
+ '(': '-.--.',
+ ')': '-.--.-',
+ '&': '.-...',
+ ':': '---...',
+ ';': '-.-.-.',
+ '=': '-...-',
+ '+': '.-.-.',
+ '-': '-....-',
+ '_': '..--.-',
+ '"': '.-..-.',
+ '$': '...-..-',
+ '@': '.--.-.',
+ '1': '.----',
+ '2': '..---',
+ '3': '...--',
+ '4': '....-',
+ '5': '.....',
+ '6': '-....',
+ '7': '--...',
+ '8': '---..',
+ '9': '----.'
+}
+
+
+morse_decoding = {
+'.-': 'A',
+ '-...': 'B',
+ '-.-.': 'C',
+ '-..': 'D',
+ '.': 'E',
+ '..-.': 'F',
+ '--.': 'G',
+ '....': 'H',
+ '..': 'I',
+ '.---': 'J',
+ '-.-': 'K',
+ '.-..': 'L',
+ '--': 'M',
+ '-.': 'N',
+ '---': 'O',
+ '.--.': 'P',
+ '--.-': 'Q',
+ '.-.': 'R',
+ '...': 'S',
+ '-': 'T',
+ '..-': 'U',
+ '...-': 'V',
+ '.--': 'W',
+ '-..-': 'X',
+ '-.--': 'Y',
+ '--..': 'Z',
+ '-----': '0',
+ '.-.-.-': '.',
+ '--..--': ',',
+ '..--..': '?',
+ '.----.': "'",
+ '-.-.--': '!',
+ '-..-.': '/',
+ '-.--.': '(',
+ '-.--.-': ')',
+ '.-...': '&',
+ '---...': ':',
+ '-.-.-.': ';',
+ '-...-': '=',
+ '.-.-.': '+',
+ '-....-': '-',
+ '..--.-': '_',
+ '.-..-.': '"',
+ '...-..-': '$',
+ '.--.-.': '@',
+ '.----': '1',
+ '..---': '2',
+ '...--': '3',
+ '....-': '4',
+ '.....': '5',
+ '-....': '6',
+ '--...': '7',
+ '---..': '8',
+ '----.': '9'
+}
+
+# tables generated with :
+
+# def morse_tables():
+#     morse_coding = {}
+#     morse_decoding = {}
+    
+#     # setting the letters
+#     morse_letters = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..']
+    
+#     for i in range(26):
+#         char,seq = chr(i + ord('A')), morse_letters[i]
+#         morse_coding[char] = seq
+#         morse_decoding[seq] = char
+    
+#     # setting the numbers
+#     morse_numbers = ['-----','.----','..---','...--','....-','.....','-....','--...','---..','----.']
+#     for i in range(10):
+#         seq = morse_numbers[i]
+#         morse_coding[str(i)] = seq
+#         morse_decoding[seq] = str(i)
+    
+#     # setting special characters
+    
+#         special = '.,?\'!/()&:;=+-_"$@'
+#         morse_special = ['.-.-.-','--..--','..--..','.----.','-.-.--','-..-.','-.--.','-.--.-','.-...','---...','-.-.-.','-...-','.-.-.','-....-','..--.-','.-..-.','...-..-','.--.-.']
+#         for i in range(len(special)):
+#             char,seq = special[i],morse_special[i]
+#             morse_coding[char] = seq
+#             morse_decoding[seq] = char
+
+#     return morse_coding, morse_decoding
