@@ -26,5 +26,3 @@ dev = [
 
 [project.scripts]
 cryptolab = "cryptolab.cli.main:app"
-
-# this file was essentially written by an AI
