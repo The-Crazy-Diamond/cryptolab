@@ -18,4 +18,8 @@ This project is a way for me to develop programming skills while having good tim
 ## Installation
 
 ```bash
+pip install -e https://github.com/The-Crazy-Diamond/cryptolab
+
+
+```bash
 pip install -e .

@@ -10,7 +10,7 @@ To add a new cipher:
 
 # Unique name used by the CLI
 NAME = "_cipher_name"
-DESCRIPTION = "brief description of what is this cipher"
+DESCRIPTION = "_brief description of what is this cipher"
 
 
 def encrypt(text: str, key: str) -> str:

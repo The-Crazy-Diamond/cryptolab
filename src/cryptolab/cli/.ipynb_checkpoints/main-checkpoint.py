@@ -1,3 +1,11 @@
+# ###
+# # These first lines should allow to enter via main.py 
+# import sys
+# from pathlib import Path
+
+# sys.path.insert(0, str(Path.cwd().parents[2] / "src"))
+# ###
+
 import typer
 from cryptolab.cli import cipher_cmds, decipher_cmds
 from cryptolab.cli import analysis_cmds

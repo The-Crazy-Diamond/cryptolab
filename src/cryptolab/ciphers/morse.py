@@ -14,7 +14,7 @@ def decrypt(text: str, space_symbol: str = '/') -> str:
     end = 1
     plain = ''
     length = len(text)
-    text += ' ' # this padding is necessary for indicating the end of the last scanned piece
+    text += ' ' # this padding is necessary for indicating the end of the last scanned piece of text
     while end <= length:
         scan = text[start:end]
         if scan == ' ': # if the scanned text is a space, just scan what's next
@@ -26,8 +26,8 @@ def decrypt(text: str, space_symbol: str = '/') -> str:
             end = start + 1
         else:
             end += 1
-    if start + 1 != length:
-        warnings.warn('A part of the code was not decrypted.')
+    if (start != length+1) and text[start:end] != ' ':
+        warnings.warn('A part of the code was not decrypted: "' + text[start:end]+'"')
     return plain
 
 morse_coding = {

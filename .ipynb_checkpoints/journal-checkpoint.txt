@@ -8,7 +8,9 @@ To do:
 [ ] add streaming option for input
 [ ] add feature that support binary files and potentially other alphabets
 [X] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
-
+[ ] improve UX with helpers
+[ ] People can enter via main (python3 main.py) and get blocked. Check lines addes in main.py
+[ ] Explain how to install (also check the difference between having a package or the whole project)
 
 General idea:
     1. Modify something in project
@@ -21,7 +23,11 @@ Using git:
     git add .
     git commit -m "Add new cipher"
     git push
-    
+
+
+Version:
+    example: 3.1.4 We change the 4 for minor changes, the 1 for major changes, the 3 for big major changes (happens very occasionnaly)
+
 2026.04.03 Creation of the repo and the architecture of the project. Basics examples implemented with AI to have a guideline. Understood for most of the files what they are for. Lot of things to do. Looking forward to it.
 
 2026.04.04 Implemented bacon.py and backward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
