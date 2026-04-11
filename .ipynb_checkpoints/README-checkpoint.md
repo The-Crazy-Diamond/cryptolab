@@ -8,15 +8,13 @@ This project is a way for me to develop programming skills while having good tim
 
 ## Features
 
-- Caesar cipher (planned)
+- Classical cipher methods (caesar, vigenere, monoalphabetic, ...)
 - Monoalphabetic substitution using frequency analysis (planned)
-- Vigenère cipher (planned)
-- Other polyalphabetic substitution methods (planned)
-- Enigma (one day maybe)
-- automatic solving (one day maybe)
+- Polyalphabetic substitution analyser (planned)
+- Enigma simulation (planned)
+- language recognition/automatic (planned)
 
 ## Installation
-(I do not know what the next lines mean, this was written by an AI)
 
 ```bash
-pip install -e .
+pip install git+https://github.com/The-Crazy-Diamond/cryptolab.git

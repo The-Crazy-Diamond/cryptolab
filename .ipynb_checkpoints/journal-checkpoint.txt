@@ -1,7 +1,7 @@
 Journal de bord (might be in frenglish)
 =======================================
 
-To do:
+# To do:
 [ ] recycle MonoalphabeticDecoder and cryptoUtils
 [ ] create a jupyter notebook "sandbox" to try things using files in the project
 [X] add txt file option for input
@@ -14,30 +14,35 @@ To do:
 
 General idea:
     1. Modify something in project
-    2. From the terminal at the root of cryptolab: pip install -e
+    2. From the terminal at the root of cryptolab: pip install -e (Actually not necessary...)
     3. Try typing a command. For example: cryptolab cipher caesar "HELLO" 3
 
-Using git:
+Version (in pyproject.toml):
+    example: 3.1.4 We change the 4 for minor changes, the 1 for major changes, the 3 for big major changes (happens very occasionnaly)
+
+Using git: (think about changing the version first)
     git init (first time only)
     git status (to see the current state)
     git add .
     git commit -m "Add new cipher"
     git push
 
+Historic
 
-Version:
-    example: 3.1.4 We change the 4 for minor changes, the 1 for major changes, the 3 for big major changes (happens very occasionnaly)
+2026.04.11 Cleaned the architecture of repo, minor refactor of morse
 
-2026.04.03 Creation of the repo and the architecture of the project. Basics examples implemented with AI to have a guideline. Understood for most of the files what they are for. Lot of things to do. Looking forward to it.
+2026.04.10 Refactor morse cipher and improve space handling
 
-2026.04.04 Implemented bacon.py and backward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
-
-2026.04.05 Implemented vigenere cipher.
-
-2026.04.06 Implemented monoalphabetic cipher.
-
-2026.04.07 Did git stuff locally and pushed to GitHub
+2026.04.09 Refactor CLI to support flexible cipher arguments (0, 1, or multiple keys). KeyError in bacon and cardan triliteral ciphers to correct.
 
 2026.04.08 Implemented morse code. Dealing with ciphers having different key setups becomes annoying. Should work on this as a priority.
 
-2026.04.09 Refactor CLI to support flexible cipher arguments (0, 1, or multiple keys). KeyError in bacon and cardan triliteral ciphers to correct.
+2026.04.07 Did git stuff locally and pushed to GitHub
+
+2026.04.06 Implemented monoalphabetic cipher.
+
+2026.04.05 Implemented vigenere cipher.
+
+2026.04.04 Implemented bacon.py and backward.py in ciphers just to exercise. Realised that some ciphers methods need no key, some need several and some could be optional. To adjust later.
+
+2026.04.03 Creation of the repo and the architecture of the project. Basics examples implemented with AI to have a guideline. Understood for most of the files what they are for. Lot of things to do. Looking forward to it.
