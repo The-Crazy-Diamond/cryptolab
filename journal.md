@@ -11,7 +11,7 @@
 -[X] improve UX with helpers (main.py, common_cmds.py)
 -[X] People can enter via main (python3 main.py) and get blocked. Check lines added in main.py
 -[x] Explain how to install (also check the difference between having a package or the whole project)
--[ ] Refactor README.md
+-[X] Refactor README.md
 
 ### Ideas
 -[ ] add streaming option for input
@@ -19,18 +19,40 @@
 -[ ] add feature that support binary files and potentially other alphabets
 
 -----------------------------------------------------------
-## Updating the project
+## Workflow routine
 ### General procedure
-1. Add feature
-2. Update version
-3. Commit
-4. pip install -e . (is it really needed ?)
-
-### Installing
-- Locally from the terminal at the root of cryptolab: `pip install -e .`
-- A snapshot from GitHub link: `pip install git+https://github.com/The-Crazy-Diamond/cryptolab.git`
-- Uninstalling `pip uninstall cryptolab`
+1. Make some change
+2. Commit
+3. Re-install `pip install -e .` (is it really needed ?)
     
+### Using git and updating
+- git init (first time only)
+- git status (to see the current state)
+1. Make changes
+    `git add .`
+    `git commit -m "Add new cipher"`
+2. Bump version
+    edit pyproject.toml
+    `git add pyproject.toml`
+    `git commit -m "Bump version to 0.2.0"`
+3. Tag THAT commit (for big improvement/reaching milestone/when I'd say "I could release this version")
+    `git tag -a v0.2.0 -m "Release 0.2.0"`
+4. Push everything
+    `git push`
+    `git push origin v0.2.0`
+
+<!-- My version:
+Adding features/refactoring code:
+1. Make changes
+2. Add: `git add .`
+3. Commit: `git commit -m "Add new cipher"` or `git commit -m "Refactor CLI helpers for dynamic arguments"`
+4. Push it: `git push`
+Bumping the version (eventually, for important version update)
+5. Edit version in pyproject.toml
+6. Commit: `git commit -m "Bump version to 0.2.0"`
+7. Tag: `git tag -a v0.2.0 -m "Release 0.2.0"`
+8. Push: `git push origin v0.2.0` -->
+
 ### Version number
 Do it manually (for now) in pyproject.toml. MAJOR.MINOR.PATCH
 - PATCH = Small fixes: bug fixes, minor improvements, no breaking changes
@@ -39,19 +61,14 @@ Do it manually (for now) in pyproject.toml. MAJOR.MINOR.PATCH
 Special rule 0.x.x: = Still in development
 Move to 1.0.0 = Big milestone (stable tool)
 
-### Using git
-(think about changing the version first)
-1. git init (first time only)
-2. git status (to see the current state)
-3. git add .
-4. git commit -m "Add new cipher"
-5. git commit -m "Bump version to 0.2.0" (eventually, for important version update)
-6. git push
-7. git push origin v0.2.0 (eventually)
-
+### Installing
+- Locally from the terminal at the root of cryptolab: `pip install -e .`
+- A snapshot from GitHub link: `pip install git+https://github.com/The-Crazy-Diamond/cryptolab.git`
+- Uninstalling `pip uninstall cryptolab`
 -----------------------------------------------------------
 ## History
 
+- 2026-04-13 Decided to stop rewriting the things I did here since I can already keep track on GitHub. I'll keep it for personal thoughts/ideas.
 - 2026-04-11 Cleaned the architecture of repo, minor refactor of morse, installation note changed in README.md, improvement of journal, refactor of _template.py, updated version
 - 2026-04-10 Refactor morse cipher and improve space handling
 - 2026-04-09 Refactor CLI to support flexible cipher arguments (0, 1, or multiple keys). KeyError in bacon and cardan triliteral ciphers to correct.
