@@ -3,43 +3,75 @@ from typing import List
 from cryptolab.ciphers import CIPHERS
 from cryptolab.utils.io import load_input
 
+def run_cipher(cipher_module, method_name, text, args):
+    func = getattr(cipher_module, method_name)
+
+    try:
+        if args is None:
+            result = func(text)
+        else:
+            result = func(text, *args)
+    except TypeError as e:
+        print(f"Invalid arguments for {cipher_module.NAME}: {e}")
+        raise typer.Exit(1)
+
+    print(result)
 
 def create_command(method_name: str):
-    """
-    method_name: "encrypt" or "decrypt"
-    """
     def factory(cipher_module):
-        def command(
-            input_data: str,
-            args: List[str] = typer.Argument([])
-        ):
-            """Process text or file using this cipher."""
-            text = load_input(input_data)
+        args_help = getattr(cipher_module, "ARGS_HELP", None)
 
-            func = getattr(cipher_module, method_name)
+        # WITHOUT args
+        if args_help is None:
 
-            try:
-                result = func(text, *args)
-            except TypeError as e:
-                print(f"Invalid arguments: {e}")
-                raise typer.Exit(1)
+            def command(
+                input_data: str = typer.Argument(
+                    ...,
+                    help="Text or path to input file"
+                )
+            ):
+                text = load_input(input_data)
+                run_cipher(cipher_module, method_name, text, None)
 
-            print(result)
+        # WITH args
+        else:
 
+            def command(
+                input_data: str = typer.Argument(
+                    ...,
+                    help="Text or path to input file"
+                ),
+                args: List[str] = typer.Argument(
+                    None,
+                    help=args_help
+                )
+            ):
+                args = args or []
+                text = load_input(input_data)
+                run_cipher(cipher_module, method_name, text, args)
+
+        # Metadata (shared)
         command.__name__ = cipher_module.NAME
-        command.__doc__ = getattr(
-            cipher_module,
-            "DESCRIPTION",
-            f"{cipher_module.NAME} cipher",
-        )
+
+        description = getattr(cipher_module, "DESCRIPTION", "")
+        command.__doc__ = f"""
+        {description}
+        
+        Examples:
+            cryptolab cipher {cipher_module.NAME} HELLO
+            cryptolab cipher {cipher_module.NAME} file.txt
+        """
 
         return command
 
     return factory
-    
+
+
 def list_ciphers():
-    """List available ciphers."""
+    """List available ciphers"""
     
-    print("Available ciphers:")
-    for name in sorted(CIPHERS.keys()):
-        print(f"- {name}")
+    print("Available ciphers:\n")
+    
+    for name, module in sorted(CIPHERS.items()):
+        desc = getattr(module, "DESCRIPTION", "")
+        print(f"- {name:<15} {desc}")

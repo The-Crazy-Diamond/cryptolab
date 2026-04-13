@@ -11,6 +11,7 @@ To add a new cipher:
 # Unique name used by the CLI
 NAME = "_cipher_name"
 DESCRIPTION = "_brief description of what is this cipher"
+ARGS_HELP = "_list of required arguments: name (type, e.g. ...)"
 
 
 def encrypt(text: str, *args: str) -> str:

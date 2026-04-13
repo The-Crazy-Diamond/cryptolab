@@ -1,5 +1,6 @@
 NAME = "backward"
-DESCRIPTION = "Backward permutation"
+DESCRIPTION = "Reverse the input text"
+ARGS_HELP = None
 
 
 def encrypt(text: str) -> str:

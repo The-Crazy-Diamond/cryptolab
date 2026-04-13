@@ -1,7 +1,9 @@
 import string
 
 NAME = "monoalphabetic"
-DESCRIPTION = "Monoalphabetic substitution with a string and a key word."
+DESCRIPTION = "Substitution cipher using a keyword to generate the alphabet"
+ARGS_HELP = "keyword (string used to build substitution alphabet: letters are taked once, remaining alphabet is appended automatically)"
+
 
 def complete_key(key: str) -> str:
     key = key.upper() + string.ascii_uppercase

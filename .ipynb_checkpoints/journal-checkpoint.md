@@ -8,9 +8,10 @@
 -[x] add txt file option for input
 -[x] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
 -[x] roughly clean the architecture (erase useless folders and files)
--[ ] improve UX with helpers
+-[X] improve UX with helpers (main.py, common_cmds.py)
 -[X] People can enter via main (python3 main.py) and get blocked. Check lines added in main.py
 -[x] Explain how to install (also check the difference between having a package or the whole project)
+-[ ] Refactor README.md
 
 ### Ideas
 -[ ] add streaming option for input
@@ -44,8 +45,9 @@ Move to 1.0.0 = Big milestone (stable tool)
 2. git status (to see the current state)
 3. git add .
 4. git commit -m "Add new cipher"
-5. git commit -m "Bump version to 0.2.0", for automated versioning (later): git tag v0.2.0
+5. git commit -m "Bump version to 0.2.0" (eventually, for important version update)
 6. git push
+7. git push origin v0.2.0 (eventually)
 
 -----------------------------------------------------------
 ## History

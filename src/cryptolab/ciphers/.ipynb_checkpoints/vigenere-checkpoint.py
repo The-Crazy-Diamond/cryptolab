@@ -1,16 +1,6 @@
-"""
-Cipher plugin template for Cryptolab.
-
-To add a new cipher:
-1. Copy this file (with "cp _template.py playfair.py")
-2. Rename it (e.g. vigenere.py, playfair.py)
-3. Update NAME (should be the same as the filename whitout the .py extension)
-4. Implement encrypt/decrypt
-"""
-
-# Unique name used by the CLI
 NAME = "vigenere"
-DESCRIPTION = "Vigenère cipher with a string and a word as a key"
+DESCRIPTION = "Polyalphabetic cipher using a repeating keyword"
+ARGS_HELP = "keyword (string, e.g. KEY)"
 
 
 def encrypt(text: str, key: str) -> str:
