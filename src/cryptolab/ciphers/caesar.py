@@ -1,6 +1,7 @@
 NAME = "caesar"
 DESCRIPTION = "Classic shift cipher (each letter shifted by a fixed amount)"
-ARGS_HELP = "shift (integer, e.g. 3)"
+ARGS_HELP = "shift (integer)"
+ARGS_EXAMPLE = "3"
 
 
 def encrypt(text: str, key: str) -> str:

@@ -11,7 +11,7 @@
 -[X] improve UX with helpers (main.py, common_cmds.py)
 -[X] People can enter via main (python3 main.py) and get blocked. Check lines added in main.py
 -[x] Explain how to install (also check the difference between having a package or the whole project)
--[ ] Refactor README.md
+-[X] Refactor README.md
 
 ### Ideas
 -[ ] add streaming option for input

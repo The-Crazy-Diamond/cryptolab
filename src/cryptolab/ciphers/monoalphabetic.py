@@ -3,6 +3,7 @@ import string
 NAME = "monoalphabetic"
 DESCRIPTION = "Substitution cipher using a keyword to generate the alphabet"
 ARGS_HELP = "keyword (string used to build substitution alphabet: letters are taked once, remaining alphabet is appended automatically)"
+ARGS_EXAMPLE = "CRYPTO"
 
 
 def complete_key(key: str) -> str:

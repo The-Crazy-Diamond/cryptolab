@@ -3,6 +3,7 @@ import warnings
 NAME = "morse"
 DESCRIPTION = "Encode/decode text using Morse code."
 ARGS_HELP = "space symbol used between words (default: '/')"
+ARGS_EXAMPLE = ""
 
 
 def encrypt(text: str, space_symbol: str = '/') -> str:
