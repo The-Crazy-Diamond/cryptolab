@@ -35,6 +35,7 @@ Run the CLI from your terminal:
 cryptolab --help
 cryptolab cipher --help
 cryptolab decipher --help
+cryptolab analysis --help
 ```
 
 ## Examples
@@ -66,6 +67,16 @@ cryptolab cipher caesar message.txt 15
 - `analysis/` — cryptanalysis tools
 - `cli/` — command-line interface
 - `utils/` — helper functions
+
+## Adding new cipher
+
+Use cipher plugin template in cryptolab/ciphers/:
+
+```bash
+cp _template.py your_cipher.py
+```
+
+Modify the code in your_cipher.py and implement encrypt and decrypt functions.
   
 ## Personal note
 
