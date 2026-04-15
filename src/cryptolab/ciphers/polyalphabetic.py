@@ -4,11 +4,11 @@ from itertools import zip_longest
 
 NAME = "polyalphabetic"
 DESCRIPTION = "Substitution cipher working like monoalphabetic but using several substitution alphabets used in loop"
-ARGS_HELP = "keywords (strings used to build substitution alphabets: letters are taked once, remaining alphabet is appended automatically)"
+ARGS_HELP = "keywords (strings) used to build substitution alphabets: letters are taked once, remaining alphabet is appended automatically"
 ARGS_EXAMPLE = "\"CRYPTO\" \"SECRET\" \"PASSWORD\""
 
 
-def polyalphabetic_common(func, text: str, *keys: str) -> str:
+def polyalphabetic_core(func, text: str, *keys: str) -> str:
     if not keys:
         raise ValueError("At least one key is required")
 
@@ -37,9 +37,9 @@ def polyalphabetic_common(func, text: str, *keys: str) -> str:
     return ''.join(result)
 
 def encrypt(text: str, *keys: str) -> str:
-    return polyalphabetic_common(mono.encrypt, text, *keys)
+    return polyalphabetic_core(mono.encrypt, text, *keys)
  
 
 def decrypt(text: str, *keys: str) -> str:
-    return polyalphabetic_common(mono.decrypt, text, *keys)
+    return polyalphabetic_core(mono.decrypt, text, *keys)
 

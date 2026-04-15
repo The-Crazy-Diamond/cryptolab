@@ -13,3 +13,12 @@ def normalize(text: str, upper: bool = True) -> str:
     if upper:
         text = text.upper()
     return text
+
+def common_chars(*strings):
+    seen = set()
+    for s in strings:
+        s_set = set(s)
+        if seen & s_set:   # intersection not empty → overlap
+            return True
+        seen |= s_set
+    return False

@@ -19,7 +19,7 @@ def decrypt(text: str, space_symbol: str = '/') -> str:
     text += ' ' # this padding is necessary for indicating the end of the last scanned piece of text
     while end <= length:
         scan = text[start:end]
-        if scan == ' ': # if the scanned text is a space, just scan what's next
+        if scan == ' ': # if the scanned text is a space, just ignore it and scan what's next
             start += 1
             end += 1
         elif scan in morse_decoding and text[end] == ' ': 
