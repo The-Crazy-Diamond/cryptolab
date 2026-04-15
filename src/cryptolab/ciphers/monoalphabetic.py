@@ -1,4 +1,5 @@
 import string
+from cryptolab.utils.text import normalize 
 
 NAME = "monoalphabetic"
 DESCRIPTION = "Substitution cipher using a keyword to generate the substitution alphabet"
@@ -7,7 +8,7 @@ ARGS_EXAMPLE = "CRYPTO"
 
 
 def complete_key(key: str) -> str:
-    key = key.upper() + string.ascii_uppercase
+    key = normalize(key) + string.ascii_uppercase
     return "".join(dict.fromkeys(key))
     
 def encrypt(text: str, key: str) -> str:

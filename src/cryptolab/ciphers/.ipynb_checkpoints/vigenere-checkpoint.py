@@ -1,3 +1,5 @@
+from cryptolab.utils.text import normalize 
+
 NAME = "vigenere"
 DESCRIPTION = "Classical Vigenère cipher. Polyalphabetic cipher using a repeating keyword"
 ARGS_HELP = "keyword (string)"
@@ -7,7 +9,8 @@ ARGS_EXAMPLE = "KEY"
 
 
 def encrypt(text: str, key: str) -> str:
-    shifts = [ord(c) - ord('A') for c in key.upper()]
+    key = normalize(key)
+    shifts = [ord(c) - ord('A') for c in key]
     l = len(key)
     index = 0
     result = []

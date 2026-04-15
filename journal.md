@@ -13,7 +13,17 @@
 -[x] Explain how to install (also check the difference between having a package or the whole project)
 -[X] Refactor README.md
 -[X] Vigenere example in --help is not correct
--[ ] Refactor vigenere using polyalphabetic
+-[ ] Refactor vigenere using polyalphabetic ?
+-[ ] ADFGVX
+-[ ] affine
+-[ ] bacon
+-[ ] triliteral
+-[ ] refactor to make bacon a triliteral similar
+-[ ] playfair
+-[ ] pollux
+-[ ] transposition
+-[ ] normalization protocol to add to cipher model
+-[ ] 
 
 ### Ideas
 -[ ] add streaming option for input
