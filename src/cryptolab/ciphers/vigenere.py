@@ -1,7 +1,9 @@
 NAME = "vigenere"
-DESCRIPTION = "Polyalphabetic cipher using a repeating keyword"
+DESCRIPTION = "Classical Vigenère cipher. Polyalphabetic cipher using a repeating keyword"
 ARGS_HELP = "keyword (string)"
 ARGS_EXAMPLE = "KEY"
+
+# Remark: Vigenere is a special case of polyalphabetic. Code could be refactored.
 
 
 def encrypt(text: str, key: str) -> str:

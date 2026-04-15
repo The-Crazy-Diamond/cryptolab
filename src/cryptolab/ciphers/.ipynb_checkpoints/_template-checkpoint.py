@@ -4,14 +4,14 @@ Cipher plugin template for Cryptolab.
 To add a new cipher:
 1. Copy this file (with "cp _template.py playfair.py")
 2. Rename it (e.g. vigenere.py, playfair.py)
-3. Update NAME (should be the same as the filename)
+3. Update attributes
 4. Implement encrypt/decrypt
 """
 
-# Unique name used by the CLI
 NAME = "_cipher_name"
 DESCRIPTION = "_brief description of what is this cipher"
-ARGS_HELP = "_list of required arguments: name (type, e.g. ...)"
+ARGS_HELP = "_list of required arguments: name (type)"
+ARGS_EXAMPLE = "_example"
 
 
 def encrypt(text: str, *args: str) -> str:

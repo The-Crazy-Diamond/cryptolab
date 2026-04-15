@@ -12,7 +12,8 @@
 -[X] People can enter via main (python3 main.py) and get blocked. Check lines added in main.py
 -[x] Explain how to install (also check the difference between having a package or the whole project)
 -[X] Refactor README.md
--[ ] Vigenere example in --help is not correct
+-[X] Vigenere example in --help is not correct
+-[ ] Refactor vigenere using polyalphabetic
 
 ### Ideas
 -[ ] add streaming option for input

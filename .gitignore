@@ -27,5 +27,6 @@ htmlcov/
 .DS_Store
 
 # Others
-journal.txt
+journal.md
 layout.txt
+sandbox.ipynb

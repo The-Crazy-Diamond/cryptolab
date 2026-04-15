@@ -58,8 +58,8 @@ def create_command(method_name: str):
         {description}
         
         Examples:
-            cryptolab cipher {cipher_module.NAME} HELLO
-            cryptolab cipher {cipher_module.NAME} file.txt
+            cryptolab cipher {cipher_module.NAME} "HELLO" {cipher_module.ARGS_EXAMPLE}
+            cryptolab cipher {cipher_module.NAME} file.txt {cipher_module.ARGS_EXAMPLE}
         """
 
         return command
