@@ -10,8 +10,8 @@ To add a new cipher:
 
 NAME = "your_cipher_name"
 DESCRIPTION = "brief description of what is this cipher"
-ARGS_HELP = "list of required arguments: name (type)"
-ARGS_EXAMPLE = "example"
+ARGS_HELP = "list of required arguments: name (type) (write None if no argument is required)"
+ARGS_EXAMPLE = "example (write \"\" if no argument is required)"
 
 # As an example:
 # NAME = "caesar"
