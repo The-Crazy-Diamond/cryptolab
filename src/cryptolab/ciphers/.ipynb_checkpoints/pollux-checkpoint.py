@@ -2,8 +2,8 @@ import random
 import cryptolab.ciphers.morse as morse
 from cryptolab.utils.text import common_chars
 NAME = "pollux"
-DESCRIPTION = "Pollux cipher first encodes the text using Morse code, then the 3 Morse symbols (Dot, Dash and Space) are substituted with alphanumeric characters via a predefined correspondence table. The algorithm substitutes a Morse symbol with a random character in the correspondance table."
-ARGS_HELP = "three distinct keys (string) containing characters which randomly replace dots, dashes and spaces, respectively, after Morse encoding"
+DESCRIPTION = "Pollux cipher first encodes the text using Morse code, then the 3 Morse symbols (Dot, Dash and Space) are substituted with alphanumeric characters via a predefined correspondence table."
+ARGS_HELP = "three distinct keys (string) containing possible characters with which dots, dashes and spaces, are respectively randomly substituted after Morse encoding"
 ARGS_EXAMPLE = "\"0378AEFMOPQXYZ\" \"145BCGJNRTW\" \"269DHIKLSUV\""
 
 
