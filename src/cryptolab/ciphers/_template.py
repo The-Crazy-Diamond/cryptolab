@@ -8,10 +8,16 @@ To add a new cipher:
 4. Implement encrypt/decrypt
 """
 
-NAME = "your_cipher_name" # e.g."caesar"
-DESCRIPTION = "brief description of what is this cipher" # e.g."Classic shift cipher (each letter shifted by a fixed amount)"
-ARGS_HELP = "list of required arguments: name (type)" # e.g."shift (integer)"
-ARGS_EXAMPLE = "example" # e.g."3"
+NAME = "your_cipher_name"
+DESCRIPTION = "brief description of what is this cipher"
+ARGS_HELP = "list of required arguments: name (type)"
+ARGS_EXAMPLE = "example"
+
+# As an example:
+# NAME = "caesar"
+# DESCRIPTION = "Classic shift cipher (each letter shifted by a fixed amount)"
+# ARGS_HELP = "shift (integer)"
+# ARGS_EXAMPLE = "3"
 
 
 def encrypt(text: str, *args: str) -> str:

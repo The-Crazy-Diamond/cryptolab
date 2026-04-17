@@ -4,7 +4,7 @@ from itertools import zip_longest
 
 NAME = "polyalphabetic"
 DESCRIPTION = "Substitution cipher working like monoalphabetic but using several substitution alphabets used in loop"
-ARGS_HELP = "keywords (strings) used to build substitution alphabets: letters are taked once, remaining alphabet is appended automatically"
+ARGS_HELP = "keywords (strings) used to build substitution alphabets: letters are taken once, remaining alphabet is appended automatically"
 ARGS_EXAMPLE = "\"CRYPTO\" \"SECRET\" \"PASSWORD\""
 
 
