@@ -1,6 +1,7 @@
 import unicodedata
 import string
 
+
 def normalize(text: str, upper: bool = True) -> str:
     # 1. Remove accents
     text = unicodedata.normalize('NFD', text)
@@ -13,7 +14,7 @@ def normalize(text: str, upper: bool = True) -> str:
     if upper:
         text = text.upper()
     return text
-
+    
 def common_chars(*strings):
     seen = set()
     for s in strings:

@@ -15,15 +15,15 @@
 -[X] Vigenere example in --help is not correct
 -[ ] Refactor vigenere using polyalphabetic ?
 -[ ] ADFGVX
--[ ] affine
+-[X] affine + atbash
 -[ ] bacon
 -[ ] triliteral
 -[ ] refactor to make bacon a triliteral similar
 -[ ] playfair
--[ ] pollux
--[ ] transposition
+-[X] pollux
+-[X] transposition
 -[ ] normalization protocol to add to cipher model
--[ ] 
+-[ ] OTP version for strings (base 64 ?) 
 
 ### Ideas
 -[ ] add streaming option for input
