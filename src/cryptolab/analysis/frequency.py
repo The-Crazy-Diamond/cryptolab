@@ -1,8 +1,13 @@
+from cryptolab.analysis.ngrams import analyse as nanalyse
+
 NAME = "frequency"
-DESCRIPTION = "brief description of what is this method"
-ARGS_HELP = "list of required arguments: name (type) (write None if no argument is required)"
-ARGS_EXAMPLE = "example (write \"\" if no argument is required)"
+DESCRIPTION = "Display the number of occurences of each character in text"
+ARGS_HELP = "(optional args will be added in an update)"
+ARGS_EXAMPLE = ""
 
 
-def analyze(text: str, *args: str):
-    raise NotImplementedError("Method function not implemented")
+def get_frequencies(text: str, **kwargs) -> dict:
+    return get_ngrams(text, n=1, **kwargs)
+    
+def analyse(text: str) -> dict:
+    return nanalyse(text,1)

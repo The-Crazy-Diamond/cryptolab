@@ -26,6 +26,14 @@
 -[X] OTP version for strings (in base64 characters)
 -[ ] Add feature in OTP to generate random keys
 -[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
+-[ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
+```
+def func(*args, **kwargs):
+    print(args)
+    print(kwargs)
+
+func(1, 2, x=10, y=20)
+```
 
 ### Ideas
 -[ ] add streaming option for input

@@ -13,12 +13,6 @@ DESCRIPTION = "brief description of what is this cipher"
 ARGS_HELP = "list of required arguments: name (type) (write None if no argument is required)"
 ARGS_EXAMPLE = "example (write \"\" if no argument is required)"
 
-# As an example:
-# NAME = "caesar"
-# DESCRIPTION = "Classic shift cipher (each letter shifted by a fixed amount)"
-# ARGS_HELP = "shift (integer)"
-# ARGS_EXAMPLE = "3"
-
 
 def encrypt(text: str, *args: str) -> str:
     raise NotImplementedError("Encrypt function not implemented")

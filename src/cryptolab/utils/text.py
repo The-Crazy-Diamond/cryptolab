@@ -1,6 +1,12 @@
 import unicodedata
 import string
 
+# Core text normalization and filtering used everywhere:
+
+# clean_text() (remove accents, punctuation, normalize case)
+# only_alpha()
+# chunk_text()
+# alphabet_index() / index_to_char()
 
 def normalize(text: str, upper: bool = True) -> str:
     # 1. Remove accents
@@ -23,3 +29,14 @@ def common_chars(*strings):
             return True
         seen |= s_set
     return False
+
+def add_spaces(text):
+    new = ''.join(char + ' ' for char in text)
+    return new[:-1]
+
+def modify_string(string: str, index: int, char: str):
+    """
+    Change char in a string at specified index 
+    """
+    return string[:index] + char + string[index+1:]
+
