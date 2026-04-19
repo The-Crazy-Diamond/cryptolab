@@ -67,7 +67,7 @@ cryptolab encrypt caesar message.txt 15
 Analyse a text assuming it was encrypted with monoalphabetic substitution:
 
 ```bash
-cryptolab monoalphabetic message.txt
+cryptolab analyse monoalphabetic message.txt
 ```
 
 ## Project Structure
