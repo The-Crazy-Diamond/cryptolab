@@ -7,6 +7,11 @@ import textwrap
 # aligned frequency output
 # color helpers (if using rich)
 
+def clear_screen() -> None:
+    # ANSI escape sequence to clear the screen
+    print("\033[H\033[J", end="")
+
+    
 def print_stacked(*strings, width=None, break_long_words=False):
     """
     Print multiple texts stacked line-by-line.

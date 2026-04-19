@@ -4,7 +4,7 @@
 -----------------------------------------------------------
 ## Tasks
 ### To do
--[ ] recycle MonoalphabeticDecoder and cryptoUtils
+-[X] recycle MonoalphabeticDecoder and cryptoUtils
 -[x] add txt file option for input
 -[x] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
 -[x] roughly clean the architecture (erase useless folders and files)
@@ -34,6 +34,7 @@ def func(*args, **kwargs):
 
 func(1, 2, x=10, y=20)
 ```
+-[ ] Improve/refactor monoalphabetic decoder
 
 ### Ideas
 -[ ] add streaming option for input

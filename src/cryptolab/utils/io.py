@@ -16,7 +16,3 @@ def load_input(input_data: str) -> str:
     
     return input_data
     
-
-def clear_screen() -> None:
-    # ANSI escape sequence to clear the screen
-    print("\033[H\033[J", end="")

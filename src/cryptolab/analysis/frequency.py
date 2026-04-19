@@ -1,4 +1,4 @@
-from cryptolab.analysis.ngrams import analyse as nanalyse
+from cryptolab.analysis.ngrams import get_ngrams
 
 NAME = "frequency"
 DESCRIPTION = "Display the number of occurences of each character in text"
@@ -10,4 +10,4 @@ def get_frequencies(text: str, **kwargs) -> dict:
     return get_ngrams(text, n=1, **kwargs)
     
 def analyse(text: str) -> dict:
-    return nanalyse(text,1)
+    return get_frequencies(text)
