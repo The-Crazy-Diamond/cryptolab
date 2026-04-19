@@ -15,20 +15,22 @@
 -[X] Vigenere example in --help is not correct
 -[ ] Refactor vigenere using polyalphabetic ?
 -[ ] ADFGVX
--[ ] affine
+-[X] affine + atbash
 -[ ] bacon
 -[ ] triliteral
 -[ ] refactor to make bacon a triliteral similar
 -[ ] playfair
--[ ] pollux
--[ ] transposition
+-[X] pollux
+-[X] transposition
 -[ ] normalization protocol to add to cipher model
--[ ] 
+-[X] OTP version for strings (in base64 characters)
+-[ ] Add feature in OTP to generate random keys
+-[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
 
 ### Ideas
 -[ ] add streaming option for input
--[ ] create a jupyter notebook "sandbox" to try things using files in the project
--[ ] add feature that support binary files and potentially other alphabets
+-[X] create a jupyter notebook "sandbox" to try things using files in the project
+-[ ] add feature that support binary files and potentially other alphabets (not sure if really pertinent)
 
 -----------------------------------------------------------
 ## Workflow routine

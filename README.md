@@ -9,7 +9,7 @@ It supports multiple cipher systems, file input, and an extensible plugin archit
 - Encrypt and decrypt using classical ciphers
 - Command-line interface powered by Typer
 - Basic cryptanalysis tools
-- Extensible plugin system for adding new ciphers
+- Extensible plugin system for adding new ciphers or new analysis tools
 
 ## Installation
 
@@ -33,32 +33,41 @@ Run the CLI from your terminal:
 
 ```bash
 cryptolab --help
-cryptolab cipher --help
-cryptolab decipher --help
-cryptolab analysis --help
+cryptolab encrypt --help
+cryptolab decrypt --help
+cryptolab analyse --help
 ```
 
 ## Examples
 
+### Basic example
 Encrypt/decrypt with Caesar cipher:
 
 ```bash
-cryptolab cipher caesar "HELLO" 3
-cryptolab decipher caesar "KHOOR" 3
+cryptolab encrypt caesar "HELLO" 3
+cryptolab decrypt caesar "KHOOR" 3
 ```
 
 ### Other ciphers
 
 ```bash
-cryptolab cipher vigenere "secret text" "KEY"
-cryptolab cipher monoalphabetic "Dear Countess, blabla" "KEYWORD"
-cryptolab decipher morse "... --- -- . / ... . -.-. .-. . - / -- . ... ... .- --. . "
+cryptolab encrypt vigenere "secret text" "KEY"
+cryptolab encrypt monoalphabetic "Dear Countess, ..." "KEYWORD"
+cryptolab decrypt morse "... --- -- . / ... . -.-. .-. . - / -- . ... ... .- --. . "
 ```
 
-### Using a file
+### Use a file
 
 ```bash
-cryptolab cipher caesar message.txt 15
+cryptolab encrypt caesar message.txt 15
+```
+
+### Use analysis tools
+
+Analyse a text assuming it was encrypted with monoalphabetic substitution:
+
+```bash
+cryptolab monoalphabetic message.txt
 ```
 
 ## Project Structure
@@ -68,7 +77,9 @@ cryptolab cipher caesar message.txt 15
 - `cli/` — command-line interface
 - `utils/` — helper functions
 
-## Adding new cipher
+## Add new features
+
+### Add new cipher
 
 Use cipher plugin template in cryptolab/ciphers/:
 
@@ -77,6 +88,16 @@ cp _template.py your_cipher.py
 ```
 
 Modify the code in your_cipher.py and implement encrypt and decrypt functions.
+
+### Add new analysis tool
+
+Use analysis tool plugin template in cryptolab/analysis/:
+
+```bash
+cp _template.py your_tool.py
+```
+
+Modify the code in your_tool.py and implement analyse function.
   
 ## Personal note
 

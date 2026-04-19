@@ -1,12 +1,12 @@
 import typer
-from pathlib import Path
-from cryptolab.utils.io import load_input
-
+from cryptolab.analysis import ANALYSIS_TOOLS
+from cryptolab.cli.common_cmds import create_command, list_analysis_tools
 
 app = typer.Typer()
 
+factory = create_command("analyse")
 
-# @app.command()
-# def frequency(input_data: str):
-#     text = load_input(input_data)
-#     print(compute_frequency(text))
+for name, module in ANALYSIS_TOOLS.items():
+    app.command(name)(factory(module))
+
+app.command("list")(list_analysis_tools)
