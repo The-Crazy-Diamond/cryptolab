@@ -26,6 +26,9 @@
 -[X] OTP version for strings (in base64 characters)
 -[ ] Add feature in OTP to generate random keys
 -[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
+-[ ] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app
+-[ ] Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving
+
 -[ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
 ```
 def func(*args, **kwargs):
@@ -34,7 +37,6 @@ def func(*args, **kwargs):
 
 func(1, 2, x=10, y=20)
 ```
--[ ] Improve/refactor monoalphabetic decoder
 
 ### Ideas
 -[ ] add streaming option for input
