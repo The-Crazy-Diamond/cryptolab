@@ -1,5 +1,6 @@
 import unicodedata
 import string
+import secrets
 
 # Core text normalization and filtering used everywhere:
 
@@ -40,3 +41,5 @@ def modify_string(string: str, index: int, char: str):
     """
     return string[:index] + char + string[index+1:]
 
+def random_string(alphabet: str, length: int) -> str:
+    return ''.join(secrets.choice(alphabet) for _ in range(length))

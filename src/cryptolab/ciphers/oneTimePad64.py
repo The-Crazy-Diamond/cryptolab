@@ -1,4 +1,5 @@
 import unicodedata
+from cryptolab.utils.text import random_string
 
 NAME = "oneTimePad64"
 DESCRIPTION = "One-time pad cipher (version for strings written in base64 characters)"
@@ -28,12 +29,6 @@ def b64_char(i: int) -> str:
         raise ValueError("Index must be in range 0–63")
     return BASE64_ALPHABET[i]
 
-def xor64(s1:str, s2:str) -> str:
-    if len(s1) != len(s2):
-         raise ValueError("Strings must have same length")
-    xor_indices = [b64_index(x) ^ b64_index(y) for x, y in zip(s1, s2)]
-    return ''.join(b64_char(i) for i in xor_indices)
-
 def normalize64(text: str) -> str: # filter text by remove accent and keeping only base64 characters (A-Z,a-z,0-9,+,/)
     # 1. Remove accents
     text = unicodedata.normalize('NFD', text)
@@ -41,18 +36,40 @@ def normalize64(text: str) -> str: # filter text by remove accent and keeping on
     
     # 2. Remove punctuation and spaces (keep only letters)
     text = ''.join(c for c in text if c in BASE64_ALPHABET)
-    
     return text
-###
 
-def encrypt(text: str, key: str) -> str:
+def random_key(length: int) -> str:
+    return random_string(BASE64_ALPHABET,length)
+
+def xor64(s1:str, s2:str) -> str:
+    if len(s1) != len(s2):
+         raise ValueError("Strings must have same length")
+    xor_indices = [b64_index(x) ^ b64_index(y) for x, y in zip(s1, s2)]
+    return ''.join(b64_char(i) for i in xor_indices)
+     
+def common_crypt(text: str, key: str, propose_key: bool = True) -> str:
     if key != normalize64(key):
         raise ValueError("Key must contain only base64 characters (A-Z,a-z,0-9,+,/)")
     text = normalize64(text)
-    if len(text) != len(key):
-        raise ValueError("Key and normalized text must have same length")
+    l_text, l_key = len(text), len(key)
+    if propose_key:
+        if l_key == 0:
+            key = random_key(l_text)
+            print("No given key. Random key used :",key)
+        elif l_key > l_text:
+            key = key[0:l_text]
+            print("Too long key. Truncated key used :",key)
+        elif l_key < l_text:
+            key = key + random_key(l_text - l_key)
+            print("Too short key. Randomly completed key used :",key)
+    else:
+        if l_text != l_key:
+            raise ValueError("Key and normalized text must have same length")
     return xor64(text,key)
+
+def encrypt(text: str, key: str = '') -> str:
+    return common_crypt(text,key)
 
 
 def decrypt(text: str, key: str) -> str:
-    return encrypt(text,key)
+    return common_crypt(text,key,False)
