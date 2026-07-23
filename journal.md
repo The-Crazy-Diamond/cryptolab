@@ -3,32 +3,13 @@
 
 -----------------------------------------------------------
 ## Tasks
-### To do
--[X] recycle MonoalphabeticDecoder and cryptoUtils
--[x] add txt file option for input
--[x] make keys optional or add default keys (e.g. for bacon default key should be 'AB')
--[x] roughly clean the architecture (erase useless folders and files)
--[X] improve UX with helpers (main.py, common_cmds.py)
--[X] People can enter via main (python3 main.py) and get blocked. Check lines added in main.py
--[x] Explain how to install (also check the difference between having a package or the whole project)
--[X] Refactor README.md
--[X] Vigenere example in --help is not correct
--[ ] Refactor vigenere using polyalphabetic ?
--[ ] ADFGVX
--[X] affine + atbash
--[ ] bacon
--[ ] triliteral
--[ ] refactor to make bacon a triliteral similar
--[ ] playfair
--[X] pollux
--[X] transposition
+### To do (priority)
 -[ ] normalization protocol to add to cipher model
--[X] OTP version for strings (in base64 characters)
--[X] Add feature in OTP to generate random keys
--[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
--[ ] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app
--[ ] Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving
+-[X] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app --> made it a REPL
+-[ ] Create a Class to display screen in analyse mode (Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving)
 
+### To do (secondary)
+-[ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
 -[ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
 ```
 def func(*args, **kwargs):
@@ -37,11 +18,18 @@ def func(*args, **kwargs):
 
 func(1, 2, x=10, y=20)
 ```
-
-### Ideas
 -[ ] add streaming option for input
--[X] create a jupyter notebook "sandbox" to try things using files in the project
 -[ ] add feature that support binary files and potentially other alphabets (not sure if really pertinent)
+
+### Cipher methods
+-[ ] Refactor vigenere using polyalphabetic ?
+-[ ] ADFGVX
+-[ ] bacon, triliteral and Cie
+-[ ] refactor to make bacon a triliteral similar
+-[ ] Della Porta cipher
+
+### Theoretical concepts
+-[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
 
 -----------------------------------------------------------
 ## Workflow routine
