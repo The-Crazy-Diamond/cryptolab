@@ -52,7 +52,7 @@ func(1, 2, x=10, y=20)
     `git tag -a v0.2.0 -m "Release 0.2.0"`
 4. Push everything
     `git push`
-    `git push origin v0.2.0`
+    `git push origin v0.2.0` (if a tag was made ?)
 
 <!-- My version:
 Adding features/refactoring code:

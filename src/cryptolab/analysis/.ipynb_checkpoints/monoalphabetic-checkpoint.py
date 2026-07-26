@@ -6,7 +6,7 @@ import string
 from cryptolab.cli.mono_shell import MonoShell
 
 NAME = "monoalphabetic"
-DESCRIPTION = "Tool designed to progressively map letters assuming that the ciphertext is an encryption using a monoalphabetic substitution"
+DESCRIPTION = "Tool designed to progressively assign letters assuming that the ciphertext is an encryption using a monoalphabetic substitution"
 ARGS_HELP = None
 ARGS_EXAMPLE = ""
 
@@ -15,7 +15,13 @@ def analyse(text: str):
     shell = MonoShell(session)
     shell.run()
 
-INITIAL_MAPPING = {c:c  for c in ' ' + string.punctuation +'\n'} # space and punctuation char maps to themselves
+def initial_mapping() -> dict[str, str]:
+    """Return the default substitution mapping.
+
+    Spaces, newlines and punctuation map to themselves.
+    Letters are initially unmapped.
+    """
+    return {c: c for c in " \n" + string.punctuation}
 
 class MonoalphabeticSession:
     """
@@ -25,7 +31,7 @@ class MonoalphabeticSession:
     def __init__(self, ciphertext: str) -> None:
         
         self.ciphertext = ciphertext.upper()
-        self.mapping = INITIAL_MAPPING # {'A': 'e', ...}            
+        self.mapping = initial_mapping()   
 
     @property
     def length(self)-> int:
@@ -36,22 +42,29 @@ class MonoalphabeticSession:
         return "".join(self.mapping.get(c, '_') for c in self.ciphertext)
 
     @property
-    def cipher_chars_to_map(self)-> str:
+    def cipher_chars_to_assign(self)-> str:
         return ''.join(c for c in ALPHABET if c not in self.mapping.keys())
 
     @property
-    def plain_chars_to_map(self) -> str:
+    def plain_chars_to_assign(self) -> str:
         return ''.join(c for c in alphabet if c not in self.mapping.values())
 
-    def frequencies(self)-> dict:
+    def frequencies(self)-> dict: #not useful since frequencies == ngrams(1)
         return get_frequencies(self.ciphertext)
 
     def ngrams(self,n: int) :
         return get_ngrams(self.ciphertext, n)
     
-    def map(self, c, p) -> None:
-        self.mapping[c] = p
+    def assign(self, cipher: str, plain: str):
+        cipher = cipher.upper()
+        plain = plain.lower()
+        
 
-    def reset(self) -> None: # to refactor
-        self.ciphertext = ciphertext.upper()
-        self.mapping = INITIAL_MAPPING # {'A': 'e', ...}  
+        for c, p in self.mapping.items():
+            if p == plain and c != cipher:
+                raise ValueError(f"'{plain}' is already assigned to '{c}'.")
+                
+        self.mapping[cipher] = plain
+
+    def reset(self) -> None:
+        self.mapping = initial_mapping() 
