@@ -2,29 +2,50 @@ import shlex
 from cryptolab.utils.text import add_spaces, modify_string
 from cryptolab.utils.formatting import clear_screen, print_stacked
 from functools import partial
+from cryptolab.analysis.ngrams import get_ngrams
 
 class MonoShell:
     def __init__(self, session: MonoSession):
         self.session = session
         self.running = True
-        self.visible_ngrams = {1}
+        self.visible_ngrams = set()
+        self.ngrams_cache = {}
+        self.NGRAM_NAMES = {
+            1: "Frequencies",
+            2: "Bigrams",
+            3: "Trigrams",
+            4: "Quadgrams",
+        }
+        self.do_ngrams(1)
         self.status = None
         self.commands = {
-            "show": self.do_show,
             "map": self.do_map,
+            "m": self.do_map,
+            "unmap": self.do_unmap,
+            "u": self.do_unmap,
+            "swap": self.do_swap,
+            "s": self.do_swap,
+            "reset": self.do_reset,
+            "r": self.do_reset,
             
             "ngrams": self.do_ngrams,
+            "ng": self.do_ngrams,
+            "frequencies": partial(self.do_ngrams, 1),
             "freq": partial(self.do_ngrams, 1),
             "bigrams": partial(self.do_ngrams, 2),
             "trigrams": partial(self.do_ngrams, 3),
             "quadgrams": partial(self.do_ngrams, 4),
             
-            "reset": self.do_reset,
+            "show": self.do_show,
+            "undo": self.do_undo,
+            "redo": self.do_redo,
             "help": self.do_help,
             "quit": self.do_quit,
+            "q": self.do_quit,
         }
 
     
+    # REPL running methods
     def run(self):
         self.display()
     
@@ -55,7 +76,7 @@ class MonoShell:
             self.status = f"Invalid arguments for '{cmd}'."
         except ValueError as e:
             self.status = str(e)
-        
+
         self.display()
 
     def display(self):
@@ -73,40 +94,58 @@ class MonoShell:
             '\nUnassigned plaintext characters: ',
             add_spaces(''.join(self.session.plain_chars_to_assign)),'\n',
         )
-
-        NGRAM_NAMES = {
-            1: "Frequencies",
-            2: "Bigrams",
-            3: "Trigrams",
-            4: "Quadgrams",
-        }
         
         for n in sorted(self.visible_ngrams):
-            name = NGRAM_NAMES.get(n, f"{n}-grams")
-            print(f"{name}: {self.session.ngrams(n)}")
+            name = self.NGRAM_NAMES.get(n, f"{n}-grams")
+            print(f"{name}: {self.ngrams_cache[n]}")
 
         if self.status is not None:
             print()
             print(self.status)
 
-    def do_show(self):
-        self.status = None
-    
+    # Modifying commands
     def do_map(self, cipher, plain):
         self.session.assign(cipher,plain)
         self.status = f"Mapped {cipher} -> {plain}"
 
+    def do_unmap(self, cipher):
+        self.session.unassign(cipher)
+        self.status = f"Unassigned {cipher}"
+
+    def do_swap(self, cipher1, cipher2):
+        self.session.swap(cipher1,cipher2)
+        self.status = f"Swapped {cipher1} <-> {cipher2}"
+    
+    def do_reset(self):
+        self.session.reset()
+        self.status = "Session reset."
+
+    # Analysis commands
     def do_ngrams(self,n:str):
         n = int(n)
+
         if n in self.visible_ngrams:
             self.visible_ngrams.remove(n)
         else:
             self.visible_ngrams.add(n)
         self.status = None
+
+        if n not in self.ngrams_cache:
+            self.ngrams_cache[n] = get_ngrams(self.session.ciphertext, n)
+            self.status = f"Cached {self.NGRAM_NAMES.get(n, f"{n}-grams")}"
             
-    def do_reset(self):
-        self.session.reset()
-        self.status = "Session reset."
+
+    # Session commands
+    def do_show(self):
+        self.status = f"Plaintext: '{self.session.plaintext}'"
+
+    def do_undo(self):
+        self.session.undo()
+        self.status = "Undo."
+    
+    def do_redo(self):
+        self.session.redo()
+        self.status = "Redo."
 
     def do_help(self):
         raise NotImplementedError("Helper not implemented")    
@@ -117,24 +156,23 @@ class MonoShell:
     
 """
 Richer command set:
-map X e
-unmap X
-swap X Q
-undo
-redo
-freq
-ngrams 2
-ngrams 3
-show
-reset
-save
-save as solved.txt
-help
-quit
+[x] map X e
+[x] unmap X
+[X] swap X Q
+[] undo
+[] redo
+[x] freq
+[x] ngrams n
+[x] show
+[x] reset
+[] save
+[] save as solved.txt
+[] help
+[x] quit
 
 ...later:
-suggest
-score
-dictionary
-auto
+[] suggest
+[] score
+[] dictionary
+[] auto
 """

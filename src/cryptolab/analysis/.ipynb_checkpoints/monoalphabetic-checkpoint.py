@@ -1,6 +1,5 @@
-from cryptolab.analysis.ngrams import get_ngrams
-from cryptolab.analysis.frequency import get_frequencies
 from cryptolab.utils.alphabet import ALPHABET, alphabet
+from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
 import string
 
 from cryptolab.cli.mono_shell import MonoShell
@@ -11,60 +10,138 @@ ARGS_HELP = None
 ARGS_EXAMPLE = ""
 
 def analyse(text: str):
-    session = MonoalphabeticSession(text)
+    session = MonoSession(text)
     shell = MonoShell(session)
     shell.run()
 
 def initial_mapping() -> dict[str, str]:
-    """Return the default substitution mapping.
+    return {}
+# def initial_mapping() -> dict[str, str]:
+#     """Return the default substitution mapping.
 
-    Spaces, newlines and punctuation map to themselves.
-    Letters are initially unmapped.
-    """
-    return {c: c for c in " \n" + string.punctuation}
+#     Spaces, newlines and punctuation map to themselves.
+#     Letters are initially unmapped.
+#     """
+#     return {c: c for c in " \n" + string.punctuation}
 
-class MonoalphabeticSession:
+    
+class MonoSession:
     """
-    MonoalphabeticSession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through a substitution mapping
+    MonoSession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through a substitution mapping
     """
     
     def __init__(self, ciphertext: str) -> None:
         
-        self.ciphertext = ciphertext.upper()
-        self.mapping = initial_mapping()   
-
+        self.ciphertext = mono_normalize(ciphertext) # to modify if more flexibility is required
+        self._mapping = initial_mapping()
+        self.history = []
+        self.future = []
+        
+    @property
+    def mapping(self):
+        return self._mapping.copy()
+    
     @property
     def length(self)-> int:
         return len(self.ciphertext)
             
+    # @property
+    # def plaintext(self)-> str:
+    #     return "".join(self._mapping.get(c, '_') for c in self.ciphertext)
     @property
-    def plaintext(self)-> str:
-        return "".join(self.mapping.get(c, '_') for c in self.ciphertext)
+    def plaintext(self):
+        out = []
+    
+        for c in self.ciphertext:
+            if c in self._mapping:
+                out.append(self._mapping[c])
+            elif c in ALPHABET:
+                out.append("_")
+            else:
+                out.append(c)
+    
+        return "".join(out)
 
     @property
     def cipher_chars_to_assign(self)-> str:
-        return ''.join(c for c in ALPHABET if c not in self.mapping.keys())
+        return ''.join(c for c in ALPHABET if c not in self._mapping.keys())
 
     @property
     def plain_chars_to_assign(self) -> str:
-        return ''.join(c for c in alphabet if c not in self.mapping.values())
+        return ''.join(c for c in alphabet if c not in self._mapping.values())
 
-    def frequencies(self)-> dict: #not useful since frequencies == ngrams(1)
-        return get_frequencies(self.ciphertext)
-
-    def ngrams(self,n: int) :
-        return get_ngrams(self.ciphertext, n)
-    
+    # Modifying methods
     def assign(self, cipher: str, plain: str):
+        # 1. Validate
         cipher = cipher.upper()
         plain = plain.lower()
-        
 
-        for c, p in self.mapping.items():
+        if (cipher not in ALPHABET) or len(cipher) > 1:
+            raise ValueError(f"'{cipher}' is not in A-Z.")
+        
+        if (plain not in alphabet) or len(cipher) > 1:
+            raise ValueError(f"'{plain}' is not in a-z.")
+    
+        for c, p in self._mapping.items():
             if p == plain and c != cipher:
                 raise ValueError(f"'{plain}' is already assigned to '{c}'.")
-                
-        self.mapping[cipher] = plain
+        # 2. Save current state        
+        self.checkpoint()
+        # 3. Modify state
+        self._mapping[cipher] = plain
 
+    def unassign(self, cipher: str):
+        # 1. Validate
+        cipher = cipher.upper() 
+        if (cipher not in ALPHABET) or len(cipher) > 1:
+            raise ValueError(f"'{cipher}' is not in A-Z.")
+        if cipher not in self._mapping:
+            raise ValueError(f"'{cipher}' is not assigned yet.")
+        # 2. Save current state    
+        self.checkpoint()
+        # 3. Modify state
+        self._mapping.pop(cipher)
+
+    def swap(self, cipher1: str, cipher2: str):
+        # 1. Validate
+        cipher1 = cipher1.upper()
+        cipher2 = cipher2.upper()
+        for cipher in [cipher1,cipher2]:
+            if (cipher not in ALPHABET) or len(cipher) > 1:
+                raise ValueError(f"'{cipher}' is not in A-Z.")
+            if cipher not in self._mapping:
+                raise ValueError(f"'{cipher}' is not assigned yet.")
+        # 2. Save current state
+        self.checkpoint()
+        # 3. Modify state
+        self._mapping[cipher1], self._mapping[cipher2] = (
+            self._mapping[cipher2],
+            self._mapping[cipher1],
+        )                
+        
     def reset(self) -> None:
-        self.mapping = initial_mapping() 
+        # 1. Validate
+        # nothing to do
+        # 2. Save current state
+        self.checkpoint()
+        # 3. Modify state
+        self._mapping = initial_mapping()
+
+    #Undo/redo methods
+    def checkpoint(self):
+        self.history.append(self.mapping) # Remember that self.mapping is a property so it already returns a fresh copy
+        self.future.clear()
+
+    def undo(self):
+        if not self.history:
+            raise ValueError("Nothing to undo.")
+    
+        self.future.append(self.mapping) # same remark as above
+        self._mapping = self.history.pop()
+
+    def redo(self):
+        if not self.future:
+            raise ValueError("Nothing to redo.")
+
+        self.history.append(self.mapping) # same remark as above
+        self._mapping = self.future.pop()

@@ -4,9 +4,13 @@
 -----------------------------------------------------------
 ## Tasks
 ### To do (priority)
+-[ ] Improve normalize in utils.text
 -[ ] normalization protocol to add to cipher model
 -[X] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app --> made it a REPL
--[ ] Create a Class to display screen in analyse mode (Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving)
+-[?] Create a Class to display screen in analyse mode (Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving)
+- [ ] (probably replace the item above) Generalize MonoShell (Make a more general CryptoShell class and make MonoShell a subclass)
+- [ ] Make attributes/methods private in MonoSession ?
+- [X] add aliases command in MonoShell
 
 ### To do (secondary)
 -[ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)

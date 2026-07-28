@@ -9,7 +9,7 @@ import secrets
 # chunk_text()
 # alphabet_index() / index_to_char()
 
-def normalize(text: str, upper: bool = True) -> str:
+def normalize(text: str, upper: bool = True) -> str: # to modify to propose more options and offer flexibility for ciphers and analyse methods
     # 1. Remove accents
     text = unicodedata.normalize('NFD', text)
     text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
@@ -21,6 +21,13 @@ def normalize(text: str, upper: bool = True) -> str:
     if upper:
         text = text.upper()
     return text
+    
+def mono_normalize(text: str) -> str: # provisary version for MonoSession, to get rid of once normalize is improved
+    #1 and 3 yes, 2 no
+    text = unicodedata.normalize('NFD', text)
+    text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
+    return text.upper()
+
     
 def common_chars(*strings):
     seen = set()
