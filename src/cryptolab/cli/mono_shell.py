@@ -1,4 +1,6 @@
 import shlex
+import json
+from pathlib import Path
 from cryptolab.utils.text import add_spaces, modify_string
 from cryptolab.utils.formatting import clear_screen, print_stacked
 from functools import partial
@@ -42,6 +44,9 @@ class MonoShell:
             "help": self.do_help,
             "quit": self.do_quit,
             "q": self.do_quit,
+
+            "save": self.do_save,
+            "load": self.do_load,
         }
 
     
@@ -153,14 +158,50 @@ class MonoShell:
     def do_quit(self):
         self.status = "Goodbye!"
         self.running = False
+
+    # Saving/loading commands
+        
+    def do_save(self, filename="monoalphabetic.json"):
+        path = Path(filename)
+    
+        if path.exists():
+            answer = input(f"'{filename}' already exists. Overwrite? [y/N] ")
+            if answer.lower() not in ("y", "yes"):
+                self.status = "Save cancelled."
+                return
+    
+        with path.open("w") as f:
+            json.dump(self.session.to_dict(), f, indent=4)
+    
+        self.status = f"Session saved to '{filename}'."
+        
+    def do_load(self, filename="monoalphabetic.json"):
+        path = Path(filename)
+    
+        if not path.exists():
+            raise ValueError(f"'{filename}' does not exist.")
+    
+        with path.open() as f:
+            data = json.load(f)
+
+        if data["analyse_tool"] != "monoalphabetic":
+            raise ValueError("Not a monoalphabetic session.")
+    
+        session = MonoSession(data["ciphertext"])
+        session._mapping = data["mapping"]
+    
+        self.session = session
+        self.status = f"Session loaded from '{filename}'."
+        
+        
     
 """
 Richer command set:
 [x] map X e
 [x] unmap X
 [X] swap X Q
-[] undo
-[] redo
+[X] undo
+[X] redo
 [x] freq
 [x] ngrams n
 [x] show

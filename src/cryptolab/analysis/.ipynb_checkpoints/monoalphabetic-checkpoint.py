@@ -15,14 +15,11 @@ def analyse(text: str):
     shell.run()
 
 def initial_mapping() -> dict[str, str]:
+    """
+    Return the default substitution mapping.
+    """
     return {}
-# def initial_mapping() -> dict[str, str]:
-#     """Return the default substitution mapping.
-
-#     Spaces, newlines and punctuation map to themselves.
-#     Letters are initially unmapped.
-#     """
-#     return {c: c for c in " \n" + string.punctuation}
+    # return {c: c for c in " \n" + string.punctuation}
 
     
 class MonoSession:
@@ -45,11 +42,10 @@ class MonoSession:
     def length(self)-> int:
         return len(self.ciphertext)
             
-    # @property
-    # def plaintext(self)-> str:
-    #     return "".join(self._mapping.get(c, '_') for c in self.ciphertext)
+    
     @property
     def plaintext(self):
+        # return "".join(self._mapping.get(c, '_') for c in self.ciphertext)
         out = []
     
         for c in self.ciphertext:
@@ -145,3 +141,12 @@ class MonoSession:
 
         self.history.append(self.mapping) # same remark as above
         self._mapping = self.future.pop()
+
+    # Save/load methods
+
+    def to_dict(self):
+        return {
+            "analyse_tool": "monoalphabetic", #metadata
+            "ciphertext": self.ciphertext,
+            "mapping": self.mapping,
+        }
