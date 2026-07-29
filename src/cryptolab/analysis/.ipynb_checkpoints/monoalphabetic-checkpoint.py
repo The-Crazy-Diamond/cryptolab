@@ -1,8 +1,8 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
-import string
+from cryptolab.ui.repl.mono_shell import MonoShell
 
-from cryptolab.cli.mono_shell import MonoShell
+import string
 
 NAME = "monoalphabetic"
 DESCRIPTION = "Tool designed to progressively assign letters assuming that the ciphertext is an encryption using a monoalphabetic substitution"
@@ -11,8 +11,7 @@ ARGS_EXAMPLE = ""
 
 def analyse(text: str):
     session = MonoSession(text)
-    shell = MonoShell(session)
-    shell.run()
+    MonoShell(session).run()
 
 def initial_mapping() -> dict[str, str]:
     """
@@ -26,7 +25,7 @@ class MonoSession:
     """
     MonoSession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through a substitution mapping
     """
-    
+    TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
         
         self.ciphertext = mono_normalize(ciphertext) # to modify if more flexibility is required
@@ -146,7 +145,7 @@ class MonoSession:
 
     def to_dict(self):
         return {
-            "analyse_tool": "monoalphabetic", #metadata
+            "analyse_tool": self.TOOL, #metadata
             "ciphertext": self.ciphertext,
             "mapping": self.mapping,
         }

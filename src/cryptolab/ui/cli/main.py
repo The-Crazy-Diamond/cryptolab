@@ -1,5 +1,5 @@
 import typer
-from cryptolab.cli import cipher_cmds, decipher_cmds, analysis_cmds
+from cryptolab.ui.cli import cipher_cmds, decipher_cmds, analysis_cmds
 
 
 app = typer.Typer(

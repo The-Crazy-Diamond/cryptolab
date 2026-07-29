@@ -12,7 +12,7 @@ def clear_screen() -> None:
     print("\033[H\033[J", end="")
 
     
-def print_stacked(*strings, width=None, break_long_words=False):
+def print_stacked(*strings, width=None, break_long_words=True):
     """
     Print multiple texts stacked line-by-line.
 
@@ -45,3 +45,29 @@ def print_stacked(*strings, width=None, break_long_words=False):
         for block in wrapped_blocks:
             print(block[i])
         print()  # blank line between groups
+
+def print_banner(*titles, width=None, symbol='='):
+    """
+    Print one or more centered title lines surrounded by a repeated symbol.
+
+    Parameters
+    ----------
+    *titles:
+        Titles to display. An empty string prints a separator line.
+    width:
+        Total width of each line. Defaults to the terminal width.
+    symbol:
+        Character used to fill the line.
+    """
+    if width is None:
+        width = shutil.get_terminal_size(fallback=(120, 20)).columns
+
+    for title in titles:
+        title = f" {title} " if title else ""
+
+        padding = width - len(title)
+        left = max(0, padding // 2)
+        right = max(0, padding - left)
+
+        print(symbol * left + title + symbol * right)
+    

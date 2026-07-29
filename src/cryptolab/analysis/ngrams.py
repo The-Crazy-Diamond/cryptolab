@@ -5,6 +5,12 @@ DESCRIPTION = "Display the number of occurences of each ngram in text"
 ARGS_HELP = "n (integer): 2 for bigrams, 3 for trigrams, etc... (optional args will be added in an update)"
 ARGS_EXAMPLE = "3"
 
+NGRAM_NAMES = {
+    1: "Frequencies",
+    2: "Bigrams",
+    3: "Trigrams",
+    4: "Quadgrams",
+}
 
 def get_ngrams(
     text: str,

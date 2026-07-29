@@ -1,26 +1,28 @@
-import shlex
+from cryptolab.ui.repl.shell import Shell
+from cryptolab.utils.text import add_spaces
+from cryptolab.utils.formatting import print_stacked
+from cryptolab.analysis.ngrams import get_ngrams, NGRAM_NAMES
+
 import json
 from pathlib import Path
-from cryptolab.utils.text import add_spaces, modify_string
-from cryptolab.utils.formatting import clear_screen, print_stacked
 from functools import partial
-from cryptolab.analysis.ngrams import get_ngrams
 
-class MonoShell:
+class MonoShell(Shell):
+
+    TITLE = "Monoalphabetic substitution"
+    PROMPT = "mono> "
     def __init__(self, session: MonoSession):
+        super().__init__()
         self.session = session
-        self.running = True
         self.visible_ngrams = set()
         self.ngrams_cache = {}
-        self.NGRAM_NAMES = {
-            1: "Frequencies",
-            2: "Bigrams",
-            3: "Trigrams",
-            4: "Quadgrams",
-        }
         self.do_ngrams(1)
-        self.status = None
-        self.commands = {
+        self.status = "Monoalphabetic session initialized."
+        
+
+    def build_commands(self):
+        commands = super().build_commands()
+        commands.update({
             "map": self.do_map,
             "m": self.do_map,
             "unmap": self.do_unmap,
@@ -41,51 +43,15 @@ class MonoShell:
             "show": self.do_show,
             "undo": self.do_undo,
             "redo": self.do_redo,
-            "help": self.do_help,
-            "quit": self.do_quit,
-            "q": self.do_quit,
-
+            # "help": self.do_help, # to implement in Shell ?
+    
             "save": self.do_save,
             "load": self.do_load,
-        }
+        })
 
-    
-    # REPL running methods
-    def run(self):
-        self.display()
-    
-        while self.running:
-            command = input("mono> ").strip()
-            self.execute(command)
-    
-    def execute(self, command: str):
-        self.status = None
-        if not command:
-            self.display()
-            return
-        
-        parts = shlex.split(command)
-        
-        cmd = parts[0]
-        args = parts[1:]
-    
-        func = self.commands.get(cmd)
-        
-        if func is None:
-            self.status = f"Unknown command: {cmd}."
-            self.display()
-            return
-        try:
-            func(*args)
-        except TypeError:
-            self.status = f"Invalid arguments for '{cmd}'."
-        except ValueError as e:
-            self.status = str(e)
+        return commands
 
-        self.display()
-
-    def display(self):
-        clear_screen()
+    def display_content(self):
         print_stacked(
             add_spaces(self.session.ciphertext),
             add_spaces(self.session.plaintext),
@@ -101,12 +67,8 @@ class MonoShell:
         )
         
         for n in sorted(self.visible_ngrams):
-            name = self.NGRAM_NAMES.get(n, f"{n}-grams")
+            name = NGRAM_NAMES.get(n, f"{n}-grams")
             print(f"{name}: {self.ngrams_cache[n]}")
-
-        if self.status is not None:
-            print()
-            print(self.status)
 
     # Modifying commands
     def do_map(self, cipher, plain):
@@ -137,7 +99,7 @@ class MonoShell:
 
         if n not in self.ngrams_cache:
             self.ngrams_cache[n] = get_ngrams(self.session.ciphertext, n)
-            self.status = f"Cached {self.NGRAM_NAMES.get(n, f"{n}-grams")}"
+            self.status = f"Cached {NGRAM_NAMES.get(n, f"{n}-grams")}"
             
 
     # Session commands
@@ -151,13 +113,6 @@ class MonoShell:
     def do_redo(self):
         self.session.redo()
         self.status = "Redo."
-
-    def do_help(self):
-        raise NotImplementedError("Helper not implemented")    
-         
-    def do_quit(self):
-        self.status = "Goodbye!"
-        self.running = False
 
     # Saving/loading commands
         

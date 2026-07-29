@@ -25,4 +25,4 @@ dev = [
 ]
 
 [project.scripts]
-cryptolab = "cryptolab.cli.main:app"
+cryptolab = "cryptolab.ui.cli.main:app"

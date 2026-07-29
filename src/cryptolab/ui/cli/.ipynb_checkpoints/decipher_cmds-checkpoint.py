@@ -1,6 +1,6 @@
 import typer
 from cryptolab.ciphers import CIPHERS
-from cryptolab.cli.common_cmds import create_command, list_ciphers
+from cryptolab.ui.cli.common_cmds import create_command, list_ciphers
 
 app = typer.Typer()
 

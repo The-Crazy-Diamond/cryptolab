@@ -8,9 +8,45 @@
 -[ ] normalization protocol to add to cipher model
 -[X] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app --> made it a REPL
 -[?] Create a Class to display screen in analyse mode (Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving)
-- [ ] (probably replace the item above) Generalize MonoShell (Make a more general CryptoShell class and make MonoShell a subclass)
+- [X] (probably replace the item above) Generalize MonoShell (Make a more general Shell class and make MonoShell a subclass)
+- [ ] Implement helper for Shell and/or MonoShell
 - [ ] Make attributes/methods private in MonoSession ?
 - [X] add aliases command in MonoShell
+- [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
+- [ ] break_long_words issue in utils/formatting.py
+- [ ] Restructure analysis:
+analysis/
+│
+├── methods/
+│   ├── frequency.py
+│   ├── index_of_coincidence.py
+│   ├── kasiski.py
+│   └── ngrams.py
+│
+└── solvers/
+    ├── monoalphabetic/
+    └── vigenere/
+
+monoalphabetic/
+├── __init__.py
+├── launcher.py
+├── persistence.py # not necessary for now. Can be if later I support JSON, YAML, compressed sessions, encrypted sessions, cloud synchronization, automatic backups.
+└── session.py
+
+
+__init__ contains:
+from .launcher import solve
+
+__all__ = ["solve"]
+
+Then the CLI simply does: from cryptolab.analysis.solvers.monoalphabetic import solve
+
+
+Loading as a classe method ?
+ @classmethod
+    def load(cls, filename):
+        ...
+        return cls(...)
 
 ### To do (secondary)
 -[ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
@@ -40,7 +76,7 @@ func(1, 2, x=10, y=20)
 ### General procedure
 1. Make some change
 2. Commit
-3. Re-install `pip install -e .` (is it really needed ?)
+3. Re-install `pip install -e .` (Only if necessary, for example if there were import changes)
     
 ### Using git and updating
 - git init (first time only)
