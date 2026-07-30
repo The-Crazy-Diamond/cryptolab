@@ -1,15 +1,14 @@
 # Cryptolab
 
-A command-line tool to experiment with classical ciphers and basic cryptanalysis.
-
-It supports multiple cipher systems, file input, and an extensible plugin architecture.
+A Python toolkit for classical cryptography, combining cipher implementations, cryptanalytic methods, and interactive solving tools through a command-line interface.
 
 ## Features
 
 - Encrypt and decrypt using classical ciphers
+- Apply cryptanalytic methods (frequency analysis, IoC, n-grams, ...)
+- Interactive solving tools for classical ciphers
+- Extensible plugin architecture for adding ciphers and analysis methods
 - Command-line interface powered by Typer
-- Basic cryptanalysis tools
-- Extensible plugin system for adding new ciphers or new analysis tools
 
 ## Installation
 
@@ -36,6 +35,7 @@ cryptolab --help
 cryptolab encrypt --help
 cryptolab decrypt --help
 cryptolab analyse --help
+cryptolab solve --help
 ```
 
 ## Examples
@@ -48,7 +48,7 @@ cryptolab encrypt caesar "HELLO" 3
 cryptolab decrypt caesar "KHOOR" 3
 ```
 
-### Other ciphers
+### More ciphers examples
 
 ```bash
 cryptolab encrypt vigenere "secret text" "KEY"
@@ -56,49 +56,62 @@ cryptolab encrypt monoalphabetic "Dear Countess, ..." "KEYWORD"
 cryptolab decrypt morse "... --- -- . / ... . -.-. .-. . - / -- . ... ... .- --. . "
 ```
 
-### Use a file
+### File input
 
 ```bash
 cryptolab encrypt caesar message.txt 15
 ```
 
-### Use analysis tools
-
-Analyse a text assuming it was encrypted with monoalphabetic substitution:
+### Use analysis methods
 
 ```bash
-cryptolab analyse monoalphabetic message.txt
+cryptolab analyse frequency message.txt
+cryptolab analyse ngrams message.txt 3
+```
+
+### Use an interactive solver
+
+Interactively solve a ciphertext encrypted with a monoalphabetic substitution:
+
+```bash
+cryptolab solve monoalphabetic message.txt
 ```
 
 ## Project Structure
 
-- `ciphers/` — cipher implementations
-- `analysis/` — cryptanalysis tools
-- `cli/` — command-line interface
-- `utils/` — helper functions
+```text
+cryptolab/
+├── analysis/
+│   ├── methods/
+│   └── solvers/
+├── ciphers/
+├── ui/
+├── utils/
+└── data/
+```
 
 ## Add new features
 
 ### Add new cipher
 
-Use cipher plugin template in cryptolab/ciphers/:
+Use cipher plugin template:
 
 ```bash
-cp _template.py your_cipher.py
+cp ciphers/_template.py ciphers/my_cipher.py
 ```
 
-Modify the code in your_cipher.py and implement encrypt and decrypt functions.
+Modify my_cipher.py and implement the encrypt() and decrypt() functions.
 
-### Add new analysis tool
+### Add new analysis method
 
-Use analysis tool plugin template in cryptolab/analysis/:
+Use analysis tool plugin template:
 
 ```bash
-cp _template.py your_tool.py
+cp analysis/methods/_template.py analysis/methods/my_method.py
 ```
 
-Modify the code in your_tool.py and implement analyse function.
+Modify my_method.py and implement the analyse() function.
   
 ## Personal note
 
-This project grew out of a personal interest in cryptology as a mathematician. It is an opportunity to improve my programming skills while having fun.
+Cryptolab began as a personal project driven by my interest in classical cryptology. It has become a playground for exploring cryptanalysis, improving my Python skills, and building a well-structured, extensible codebase.
