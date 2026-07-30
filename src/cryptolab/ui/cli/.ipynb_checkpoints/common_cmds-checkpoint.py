@@ -1,7 +1,7 @@
 import typer
 from typing import List
 from cryptolab.ciphers import CIPHERS
-from cryptolab.analysis import ANALYSIS_TOOLS
+from cryptolab.analysis.methods import ANALYSIS_METHODS
 from cryptolab.utils.io import load_input
 
 def run_cipher(module, method_name, text, args):
@@ -68,19 +68,21 @@ def create_command(method_name: str):
     return factory
 
 
-def list_methods(registry: dict, title: str):
-    print(f"{title}\n")
+# List methods
+#Removed because --help already reveals the list of methods as the list of commands (in a nicer way in fact)
+# def list_methods(registry: dict, title: str):
+#     print(f"{title}\n")
 
-    for name, module in sorted(registry.items()):
-        desc = getattr(module, "DESCRIPTION", "").strip()
-        print(f"- {name:<15} {desc}")
+#     for name, module in sorted(registry.items()):
+#         desc = getattr(module, "DESCRIPTION", "").strip()
+#         print(f"- {name:<15} {desc}")
 
-def list_ciphers():
-    """List available ciphers"""
-    list_methods(CIPHERS, "Available ciphers:")
+# def list_ciphers():
+#     """List available ciphers"""
+#     list_methods(CIPHERS, "Available ciphers:")
 
 
-def list_analysis_tools():
-    """List available analysis tools"""
-    list_methods(ANALYSIS_TOOLS, "Available analysis tools:")
+# def list_analysis_methods():
+#     """List available analysis methods"""
+#     list_methods(ANALYSIS_METHODS, "Available analysis methods:")
     

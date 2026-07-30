@@ -1,4 +1,4 @@
-from cryptolab.analysis.ngrams import get_ngrams
+from cryptolab.analysis.methods.ngrams import get_ngrams
 
 NAME = "frequency"
 DESCRIPTION = "Display the number of occurences of each character in text"

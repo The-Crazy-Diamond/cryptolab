@@ -14,39 +14,10 @@
 - [X] add aliases command in MonoShell
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
-- [ ] Restructure analysis:
-analysis/
-│
-├── methods/
-│   ├── frequency.py
-│   ├── index_of_coincidence.py
-│   ├── kasiski.py
-│   └── ngrams.py
-│
-└── solvers/
-    ├── monoalphabetic/
-    └── vigenere/
-
-monoalphabetic/
-├── __init__.py
-├── launcher.py
-├── persistence.py # not necessary for now. Can be if later I support JSON, YAML, compressed sessions, encrypted sessions, cloud synchronization, automatic backups.
-└── session.py
+- [ ] Rewrite README
+- [X] Restructure analysis
 
 
-__init__ contains:
-from .launcher import solve
-
-__all__ = ["solve"]
-
-Then the CLI simply does: from cryptolab.analysis.solvers.monoalphabetic import solve
-
-
-Loading as a classe method ?
- @classmethod
-    def load(cls, filename):
-        ...
-        return cls(...)
 
 ### To do (secondary)
 -[ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)

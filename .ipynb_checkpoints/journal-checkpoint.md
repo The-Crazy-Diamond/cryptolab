@@ -14,6 +14,7 @@
 - [X] add aliases command in MonoShell
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
+- [ ] Rewrite README
 - [ ] Restructure analysis:
 analysis/
 │

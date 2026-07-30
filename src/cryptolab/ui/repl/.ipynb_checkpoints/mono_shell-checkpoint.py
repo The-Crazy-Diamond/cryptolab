@@ -1,7 +1,8 @@
 from cryptolab.ui.repl.shell import Shell
+from cryptolab.analysis.solvers.monoalphabetic.session import MonoSession
 from cryptolab.utils.text import add_spaces
 from cryptolab.utils.formatting import print_stacked
-from cryptolab.analysis.ngrams import get_ngrams, NGRAM_NAMES
+from cryptolab.analysis.methods.ngrams import get_ngrams, NGRAM_NAMES
 
 import json
 from pathlib import Path

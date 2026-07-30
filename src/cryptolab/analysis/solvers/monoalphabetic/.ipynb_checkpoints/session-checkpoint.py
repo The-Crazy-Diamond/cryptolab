@@ -1,17 +1,8 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
-from cryptolab.ui.repl.mono_shell import MonoShell
 
 import string
 
-NAME = "monoalphabetic"
-DESCRIPTION = "Tool designed to progressively assign letters assuming that the ciphertext is an encryption using a monoalphabetic substitution"
-ARGS_HELP = None
-ARGS_EXAMPLE = ""
-
-def analyse(text: str):
-    session = MonoSession(text)
-    MonoShell(session).run()
 
 def initial_mapping() -> dict[str, str]:
     """
