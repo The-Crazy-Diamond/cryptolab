@@ -6,10 +6,11 @@
 ### To do (priority)
 - [ ] Improve normalize in utils.text
 - [ ] normalization protocol to add to cipher model
-- [ ] Implement helper for Shell and/or MonoShell
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
-- [X] Rewrite README
+- [ ] factory for solvers' commands and template models for folder and files solvers
+- [ ] Improve helpers (for ciphers in particular, and also for solvers...). Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
+- [ ] improve save() and load() in MonoSession
 - [ ] Add analysis method (kasiski, ioc) and modify README:
 
             ### Use analysis methods
@@ -20,7 +21,6 @@
             cryptolab analyse ioc message.txt
             cryptolab analyse kasiski message.txt
             ```
-
 
 
 ### To do (secondary)
