@@ -65,7 +65,7 @@ class MonoSession:
         if (cipher not in ALPHABET) or len(cipher) > 1:
             raise ValueError(f"'{cipher}' is not in A-Z.")
         
-        if (plain not in alphabet) or len(cipher) > 1:
+        if (plain not in alphabet) or len(plain) > 1:
             raise ValueError(f"'{plain}' is not in a-z.")
     
         for c, p in self._mapping.items():

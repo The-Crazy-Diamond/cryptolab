@@ -4,24 +4,28 @@
 -----------------------------------------------------------
 ## Tasks
 ### To do (priority)
--[ ] Improve normalize in utils.text
--[ ] normalization protocol to add to cipher model
--[X] Improve/refactor monoalphabetic decoder: move mono_display, move solve in CLI and improve it to make it like a sub-app --> made it a REPL
--[?] Create a Class to display screen in analyse mode (Improvements ideas for MonoalphabeticSubstitutionDecoder: Replace plaintext by plaintexts, an array of possible plaintexts to work on different guesses in paraellel, Add a dict that memorizes replacement map, Create cancel command, Make an automatic solving)
-- [X] (probably replace the item above) Generalize MonoShell (Make a more general Shell class and make MonoShell a subclass)
+- [ ] Improve normalize in utils.text
+- [ ] normalization protocol to add to cipher model
 - [ ] Implement helper for Shell and/or MonoShell
-- [ ] Make attributes/methods private in MonoSession ?
-- [X] add aliases command in MonoShell
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
-- [ ] Rewrite README
-- [X] Restructure analysis
+- [X] Rewrite README
+- [ ] Add analysis method (kasiski, ioc) and modify README:
+
+            ### Use analysis methods
+            
+            ```bash
+       git     cryptolab analyse frequency message.txt
+            cryptolab analyse ngrams message.txt 3
+            cryptolab analyse ioc message.txt
+            cryptolab analyse kasiski message.txt
+            ```
 
 
 
 ### To do (secondary)
--[ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
--[ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
+- [ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
+- [ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
 ```
 def func(*args, **kwargs):
     print(args)
@@ -29,18 +33,19 @@ def func(*args, **kwargs):
 
 func(1, 2, x=10, y=20)
 ```
--[ ] add streaming option for input
--[ ] add feature that support binary files and potentially other alphabets (not sure if really pertinent)
+- [ ] add streaming option for input
+- [ ] add feature that support binary files and potentially other alphabets (not sure if really pertinent)
+- [ ] Make attributes/methods private in MonoSession ?
 
 ### Cipher methods
--[ ] Refactor vigenere using polyalphabetic ?
--[ ] ADFGVX
--[ ] bacon, triliteral and Cie
--[ ] refactor to make bacon a triliteral similar
--[ ] Della Porta cipher
+- [ ] Refactor vigenere using polyalphabetic ?
+- [ ] ADFGVX
+- [ ] bacon, triliteral and Cie
+- [ ] refactor to make bacon a triliteral similar
+- [ ] Della Porta cipher
 
 ### Theoretical concepts
--[ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
+- [ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere
 
 -----------------------------------------------------------
 ## Workflow routine

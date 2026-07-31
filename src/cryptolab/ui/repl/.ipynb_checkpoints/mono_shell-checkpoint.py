@@ -17,40 +17,46 @@ class MonoShell(Shell):
         self.session = session
         self.visible_ngrams = set()
         self.ngrams_cache = {}
-        self.do_ngrams(1)
-        self.status = "Monoalphabetic session initialized."
+        self.status = "Monoalphabetic session initialized. \n" + self.status
         
 
     def build_commands(self):
         commands = super().build_commands()
         commands.update({
             "map": self.do_map,
-            "m": self.do_map,
             "unmap": self.do_unmap,
-            "u": self.do_unmap,
             "swap": self.do_swap,
-            "s": self.do_swap,
             "reset": self.do_reset,
-            "r": self.do_reset,
             
             "ngrams": self.do_ngrams,
-            "ng": self.do_ngrams,
-            "frequencies": partial(self.do_ngrams, 1),
-            "freq": partial(self.do_ngrams, 1),
-            "bigrams": partial(self.do_ngrams, 2),
-            "trigrams": partial(self.do_ngrams, 3),
-            "quadgrams": partial(self.do_ngrams, 4),
+            "frequencies": self.do_frequencies,
+            "bigrams": self.do_bigrams,
+            "trigrams": self.do_trigrams,
+            "quadgrams": self.do_quadgrams,
             
             "show": self.do_show,
             "undo": self.do_undo,
             "redo": self.do_redo,
-            # "help": self.do_help, # to implement in Shell ?
     
             "save": self.do_save,
             "load": self.do_load,
         })
 
         return commands
+
+    def build_aliases(self):
+        aliases = super().build_aliases()
+        aliases.update({
+            "m": "map",
+            "u": "unmap",
+            "s": "swap",
+            "r": "reset",
+            
+            "ng": "ngrams",
+            "freq": "frequencies",
+        })
+
+        return aliases
 
     def display_content(self):
         print_stacked(
@@ -73,23 +79,65 @@ class MonoShell(Shell):
 
     # Modifying commands
     def do_map(self, cipher, plain):
+        """
+        Assign a plaintext letter to a ciphertext letter.
+    
+        Usage:
+            map <cipher> <plain>
+    
+        Example:
+            map X e
+        """
         self.session.assign(cipher,plain)
         self.status = f"Mapped {cipher} -> {plain}"
 
     def do_unmap(self, cipher):
+        """
+        Unassign the plaintext letter of a ciphertext letter.
+    
+        Usage:
+            unmap <cipher>
+    
+        Example:
+            unmap X
+        """
         self.session.unassign(cipher)
         self.status = f"Unassigned {cipher}"
 
     def do_swap(self, cipher1, cipher2):
+        """
+        Swap two existing assignments.
+    
+        Usage:
+            swap <cipher1> <cipher2>
+    
+        Example:
+            swap X Y
+        """
         self.session.swap(cipher1,cipher2)
         self.status = f"Swapped {cipher1} <-> {cipher2}"
     
     def do_reset(self):
+        """
+        Reset the session.
+    
+        Usage:
+            reset
+        """
         self.session.reset()
         self.status = "Session reset."
 
     # Analysis commands
     def do_ngrams(self,n:str):
+        """
+        Toggle the display of n-grams.
+    
+        Usage:
+            ngrams <n>
+    
+        Example:
+            ngrams 2
+        """
         n = int(n)
 
         if n in self.visible_ngrams:
@@ -102,22 +150,87 @@ class MonoShell(Shell):
             self.ngrams_cache[n] = get_ngrams(self.session.ciphertext, n)
             self.status = f"Cached {NGRAM_NAMES.get(n, f"{n}-grams")}"
             
+    def do_frequencies(self):
+        """
+        Toggle the display of letter frequencies.
+        
+        Usage:
+            frequencies
+        """
+
+        
+        self.do_ngrams(1)
+    
+    def do_bigrams(self):
+        """
+        Toggle the display of bigrams.
+        
+        Usage:
+            bigrams
+        """
+        self.do_ngrams(2)
+    
+    def do_trigrams(self):
+        """
+        Toggle the display of trigrams.
+        
+        Usage:
+            trigrams
+        """
+        self.do_ngrams(3)
+    
+    def do_quadgrams(self):
+        """
+        Toggle the display of quadgrams.
+        
+        Usage:
+            quadgrams
+        """
+        self.do_ngrams(4)
+            
 
     # Session commands
     def do_show(self):
+        """
+        Print the current plaintext state.
+    
+        Usage:
+            show
+        """
         self.status = f"Plaintext: '{self.session.plaintext}'"
 
     def do_undo(self):
+        """
+        Undo last command.
+    
+        Usage:
+            undo
+        """
         self.session.undo()
         self.status = "Undo."
     
     def do_redo(self):
+        """
+        Redo previous undone command.
+    
+        Usage:
+            redo
+        """
         self.session.redo()
         self.status = "Redo."
 
     # Saving/loading commands
         
     def do_save(self, filename="monoalphabetic.json"):
+        """
+        Save the session in a JSON file. (By thefault, filename is "monoalphabetic.json".)
+    
+        Usage:
+            save <filename>
+    
+        Example:
+            save my_session.json
+        """
         path = Path(filename)
     
         if path.exists():
@@ -132,6 +245,15 @@ class MonoShell(Shell):
         self.status = f"Session saved to '{filename}'."
         
     def do_load(self, filename="monoalphabetic.json"):
+        """
+        Load the session from a JSON file.
+    
+        Usage:
+            load <filename>
+    
+        Example:
+            load monoalphabetic.json
+        """
         path = Path(filename)
     
         if not path.exists():
@@ -152,22 +274,8 @@ class MonoShell(Shell):
         
     
 """
-Richer command set:
-[x] map X e
-[x] unmap X
-[X] swap X Q
-[X] undo
-[X] redo
-[x] freq
-[x] ngrams n
-[x] show
-[x] reset
-[] save
-[] save as solved.txt
-[] help
-[x] quit
+Commands to add:
 
-...later:
 [] suggest
 [] score
 [] dictionary

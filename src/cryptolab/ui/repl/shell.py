@@ -6,17 +6,22 @@ class Shell:
     PROMPT = "shell> "
     def __init__(self):
         self.running = True
-        self.status = None
+        self.status = "Type 'help' to show commands."
         self.commands = self.build_commands()
+        self.aliases = self.build_aliases()
 
     def build_commands(self):
         return {
             "help": self.do_help,
             "quit": self.do_quit,
-            "q": self.do_quit,
             "exit": self.do_quit,
         }
-
+        
+    def build_aliases(self):
+        return {
+            "q": "quit",
+        }
+        
     def display(self):
         # 1.Generic preamble
         clear_screen()
@@ -56,6 +61,9 @@ class Shell:
         args = parts[1:]
 
         # Getting the associated function
+        ## Resolve alias
+        cmd = self.aliases.get(cmd, cmd)
+        
         func = self.commands.get(cmd)
         
         if func is None:
@@ -64,8 +72,10 @@ class Shell:
             return
 
         # Executing
+        handled = False
         try:
-            func(*args)
+            result = func(*args)
+            handled = (result is True)
         except TypeError:
             self.status = f"Invalid arguments for '{cmd}'."
         except ValueError as e:
@@ -74,11 +84,53 @@ class Shell:
             self.status = str(e)
 
         # Refresh the display
-        self.display()
+        if not handled:
+            self.display()
 
-    def do_help(self):
-        raise NotImplementedError("Helper not implemented")    
+    def do_help(self, command=None):
+        """Show available commands or help for a specific command."""
+    
+        if command is None:
+            print("Available commands:\n")
+    
+            for name in sorted(self.commands):
+                func = self.commands[name]
+    
+                aliases = sorted(
+                    alias
+                    for alias, target in self.aliases.items()
+                    if target == name
+                )
+    
+                doc = (func.__doc__ or "").strip().splitlines()
+                summary = doc[0] if doc else ""
+    
+                alias_text = f" ({', '.join(aliases)})" if aliases else ""
+    
+                print(f"  {name:<12}{alias_text} {summary}")
+            return True
+    
+            print("\nType 'help <command>' for details.")
+            return True
+    
+        # Resolve aliases
+        command = self.aliases.get(command, command)
+    
+        func = self.commands.get(command)
+    
+        if func is None:
+            raise ValueError(f"Unknown command '{command}'.")
+    
+        print(func.__doc__ or "No help available.")
+        return True
+        # True is returned when do_help() prints something itself
      
     def do_quit(self):
+        """
+        Quit session.
+
+        Usage:
+            quit
+        """
         self.status = "Goodbye!"
         self.running = False
