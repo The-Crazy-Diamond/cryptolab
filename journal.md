@@ -6,7 +6,7 @@
 ### To do (priority)
 - [ ] Improve normalize in utils.text
 - [ ] normalization protocol to add to cipher model
-- [ ] Implement helper for Shell and/or MonoShell
+- [X] Implement helper for Shell and/or MonoShell
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
 - [X] Rewrite README
@@ -20,7 +20,6 @@
             cryptolab analyse ioc message.txt
             cryptolab analyse kasiski message.txt
             ```
-
 
 
 ### To do (secondary)
