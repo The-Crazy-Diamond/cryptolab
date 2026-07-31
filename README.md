@@ -67,6 +67,7 @@ cryptolab encrypt caesar message.txt 15
 ```bash
 cryptolab analyse frequency message.txt
 cryptolab analyse ngrams message.txt 3
+cryptolab analyse kasiski message.txt
 ```
 
 ### Use an interactive solver
