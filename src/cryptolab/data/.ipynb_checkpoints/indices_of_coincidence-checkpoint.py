@@ -1,0 +1,23 @@
+IOC_dict = {
+    "arabic": 0.0758,
+    "danish": 0.0707,
+    "dutch": 0.0798,
+    "english": 0.0667,
+    "esperanto": 0.0690,
+    "finnish": 0.0737,
+    "french": 0.0778,
+    "german": 0.0762,
+    "greek": 0.0691,
+    "hebrew": 0.0768,
+    "italian": 0.0738,
+    "japanese": 0.0772,
+    "malay": 0.0852,
+    "norwegian": 0.0694,
+    "portuguese": 0.0745,
+    "russian": 0.0529,
+    "serbian": 0.0643,
+    "spanish": 0.0770,
+    "swedish": 0.0644,
+    
+    "random": 1/26, 
+} # Source: Wikipedia

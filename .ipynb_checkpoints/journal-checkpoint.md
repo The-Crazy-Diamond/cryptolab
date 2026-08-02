@@ -9,9 +9,10 @@
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
 - [ ] factory for solvers' commands and template models for folder and files solvers
-- [ ] Improve helpers (for ciphers in particular, and also for solvers...). Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
+- [ ] Improve helpers (for ciphers in particular, and also for solvers...).
+- [ ] Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
 - [ ] improve save() and load() in MonoSession
-- [ ] Improve kasiski
+- [X] Improve kasiski
 - [ ] Implement ioc and modify README:
 
             ### Use analysis methods
@@ -44,6 +45,7 @@ func(1, 2, x=10, y=20)
 - [ ] bacon, triliteral and Cie
 - [ ] refactor to make bacon a triliteral similar
 - [ ] Della Porta cipher
+- [ ] Autoclave 
 
 ### Theoretical concepts
 - [ ] Understand the distinction of the command vs method name present in different layer (1. main 2. common_cmds 3. cipher_cmds,decipher_cmds, analysis_cmds 4. ciphers/analysis_methods (e.g. vigenere or frequency)) previously: cipher/decipher/analysis, encrypt/decrypt/analyse,  now: encrypt/decrypt/analyse everywhere

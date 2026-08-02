@@ -1,5 +1,10 @@
-NAME = "indexOfCoincidence"
-DESCRIPTION = "brief description of what is this method"
+from cryptolab.utils.text import normalize
+from cryptolab.data.indices_of_coincidence import IOC_dict
+from cryptolab.analysis.methods.IOC import index_of_coincidence
+from cryptolab.analysis.methods.MIOC import mutual_index_of_coincidence
+
+NAME = "coincidence_test"
+DESCRIPTION = "Computes the index of coincidence of a text."
 ARGS_HELP = "list of required arguments: name (type) (write None if no argument is required)"
 ARGS_EXAMPLE = "example (write \"\" if no argument is required)"
 
@@ -8,17 +13,7 @@ def analyse(text: str, *args: str):
     raise NotImplementedError("Method function not implemented")
 
 
-"""
-CODE TO RECYCLE:
-
-def index_of_coincidence(string):
-    string = string.upper()
-    n = len(string)
-    sum = 0.0
-    for i in range(26):
-        frequency = string.count(chr(i + ord('A')))
-        sum += frequency * (frequency -1)
-    return sum / (n*(n-1))
+         
     
 def modular(number,modulo):
     result = number % modulo
@@ -42,17 +37,7 @@ def test_coincidence(cipher,key_length):
     sum /= key_length
     print(sum)
 
-def mutual_index_of_coincidence(string1, string2):
-    string1 = string1.upper()
-    string2 = string2.upper()
-    n1 = len(string1)
-    n2 = len(string2)
-    sum = 0.0
-    for i in range(26):
-        frequency1 = string1.count(chr(i + ord('A')))
-        frequency2 = string2.count(chr(i + ord('A')))
-        sum += frequency1 * frequency2
-    return sum / (n1*n2)
+
 
 def vigenere_get_system(cipher,key_length, trust_threshold = 0.05):
     # yields system as in p.86 ... to improve
@@ -64,4 +49,3 @@ def vigenere_get_system(cipher,key_length, trust_threshold = 0.05):
                 if MI > trust_threshold:
                     print("k_" + str(i) + " - " + "k_" + str(j)+ " = " + str(g) + "   (MI = " + str(MI) + ")")
 
-"""
