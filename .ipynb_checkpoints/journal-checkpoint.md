@@ -11,7 +11,8 @@
 - [ ] factory for solvers' commands and template models for folder and files solvers
 - [ ] Improve helpers (for ciphers in particular, and also for solvers...). Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
 - [ ] improve save() and load() in MonoSession
-- [ ] Add analysis method (kasiski, ioc) and modify README:
+- [ ] Improve kasiski
+- [ ] Implement ioc and modify README:
 
             ### Use analysis methods
             
