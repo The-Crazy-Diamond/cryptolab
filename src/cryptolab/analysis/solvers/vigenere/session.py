@@ -1,5 +1,6 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
+from cryptolab.analysis.solvers.polyalphabetic.session import PolySession
 
 import string
 
@@ -22,7 +23,7 @@ def vigenere_get_system(cipher,key_length, coincidence_threshold = 0.05):
                     print("k_" + str(i) + " - " + "k_" + str(j)+ " = " + str(g) + "   (MI = " + str(MI) + ")")
 
                     
-class MonoSession:
+class VigenereSession(PolySession):
     """
     MonoSession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through a substitution mapping
     """

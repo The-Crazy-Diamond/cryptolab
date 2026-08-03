@@ -23,6 +23,7 @@ def normalize(text: str, upper: bool = True) -> str: # to modify to propose more
     return text
     
 def mono_normalize(text: str) -> str: # provisary version for MonoSession, to get rid of once normalize is improved
+    # NOTE: Currently also used for PolySession and VigenereSession
     #1 and 3 yes, 2 no
     text = unicodedata.normalize('NFD', text)
     text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
