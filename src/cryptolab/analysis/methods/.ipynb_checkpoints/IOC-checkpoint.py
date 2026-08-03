@@ -9,11 +9,11 @@ ARGS_EXAMPLE = ""
 def analyse(text: str):
     return index_of_coincidence(text)
 
-def index_of_coincidence(string):
+def index_of_coincidence(string: str):
     """
     Compute the index of coincidence of ´string´.
     
-    I_C(x) = (\sum_{i=0}^25 f_i (f_i - 1)) / (n(n+1))"
+    I_C(x) = (sum_{i=0}^25 f_i (f_i - 1)) / (n(n+1))"
     """
     string = normalize(string)
     n = len(string)
@@ -21,4 +21,4 @@ def index_of_coincidence(string):
     for i in range(26):
         frequency = string.count(chr(i + ord('A')))
         sum += frequency * (frequency - 1)
-    return sum / (n*(n-1))
+    return round(sum / (n*(n-1)),4)

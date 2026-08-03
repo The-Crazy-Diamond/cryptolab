@@ -7,10 +7,11 @@ ARGS_HELP = "n-grams size (int, default = 3), key_length_bound (int, default = 1
 ARGS_EXAMPLE = "3"
 
 
-def analyse(text: str, n: int = 3, key_length_bound: int = 10, score_margin: int = 5):
-    
-    # Normalize the ciphertext
+def analyse(text: str, n: int = 3, key_length_bound = 10, score_margin = 5):
+    # Treat input
     text = normalize(text)
+    key_length_bound = int(key_length_bound)
+    score_margin = int(score_margin)
 
     # Compute distances between repeated n-grams
     occurrences = ngrams_distances(text, n)

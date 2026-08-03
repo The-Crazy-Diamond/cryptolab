@@ -9,11 +9,11 @@ ARGS_EXAMPLE = "file02.txt"
 def analyse(text: str, other_text: str):
     return mutual_index_of_coincidence(text, other_text)
 
-def mutual_index_of_coincidence(string1, string2):
+def mutual_index_of_coincidence(string1: str, string2: str):
     """
     Compute the mutual index of coincidence of ´string1´ and ´string2´.
     
-    MI_C(x) = (\sum_{i=0}^25 (f_i * f_i')) / (n * n')"
+    MI_C(x) = (sum_{i=0}^25 (f_i * f_i')) / (n * n')"
     """
     string1 = normalize(string1)
     string2 = normalize(string2)
@@ -24,4 +24,4 @@ def mutual_index_of_coincidence(string1, string2):
         frequency1 = string1.count(chr(i + ord('A')))
         frequency2 = string2.count(chr(i + ord('A')))
         sum += frequency1 * frequency2
-    return sum / (n1*n2)
+    return round(sum / (n1*n2),4)
