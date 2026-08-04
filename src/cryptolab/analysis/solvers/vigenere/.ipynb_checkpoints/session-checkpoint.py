@@ -1,5 +1,5 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
-from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
+from cryptolab.utils.text import normalize
 from cryptolab.analysis.solvers.polyalphabetic.session import PolySession
 
 import string
@@ -30,7 +30,7 @@ class VigenereSession(PolySession):
     TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
         
-        self.ciphertext = mono_normalize(ciphertext) # to modify if more flexibility is required
+        self.ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True) 
         self._mapping = initial_mapping()
         self.history = []
         self.future = []

@@ -1,5 +1,5 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
-from cryptolab.utils.text import mono_normalize #change to normalize once it's improved in utils.text
+from cryptolab.utils.text import normalize
 
 import string
 
@@ -18,39 +18,46 @@ class MonoSession:
     """
     TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
-        
-        self.ciphertext = mono_normalize(ciphertext) # to modify if more flexibility is required
+        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True) 
         self._mapping = initial_mapping()
         self.history = []
         self.future = []
+
+    # Getters
+    @property
+    def ciphertext(self):
+        return self._ciphertext
         
     @property
     def mapping(self):
         return self._mapping.copy()
-    
+
+    # Other properties
     @property
     def length(self)-> int:
-        return len(self.ciphertext)
+        return len(self._ciphertext)
             
-    
+    def get_plain_char(self, c):
+        if c in self._mapping:
+            return self._mapping[c]
+        elif c in ALPHABET:
+            return "_"
+        else:
+            return c
+        
     @property
     def plaintext(self):
-        # return "".join(self._mapping.get(c, '_') for c in self.ciphertext)
+        # return "".join(self._mapping.get(c, '_') for c in self._ciphertext)
         out = []
     
-        for c in self.ciphertext:
-            if c in self._mapping:
-                out.append(self._mapping[c])
-            elif c in ALPHABET:
-                out.append("_")
-            else:
-                out.append(c)
+        for c in self._ciphertext:
+            out.append(self.get_plain_char(c))
     
         return "".join(out)
 
     @property
     def cipher_chars_to_assign(self)-> str:
-        return ''.join(c for c in ALPHABET if c not in self._mapping.keys())
+        return ''.join(c for c in ALPHABET if (c in self._ciphertext) and (c not in self._mapping.keys()))
 
     @property
     def plain_chars_to_assign(self) -> str:
@@ -137,6 +144,6 @@ class MonoSession:
     def to_dict(self):
         return {
             "analyse_tool": self.TOOL, #metadata
-            "ciphertext": self.ciphertext,
+            "ciphertext": self._ciphertext,
             "mapping": self.mapping,
         }

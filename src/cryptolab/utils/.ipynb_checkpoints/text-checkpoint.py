@@ -2,22 +2,17 @@ import unicodedata
 import string
 import secrets
 
-# Core text normalization and filtering used everywhere:
-
-# clean_text() (remove accents, punctuation, normalize case)
-# only_alpha()
-# chunk_text()
-# alphabet_index() / index_to_char()
-
-def normalize(text: str, upper: bool = True) -> str: # to modify to propose more options and offer flexibility for ciphers and analyse methods
+def normalize(text: str, remove_accents: bool = True, only_letters: bool = True, upper: bool = True) -> str:
     # 1. Remove accents
-    text = unicodedata.normalize('NFD', text)
-    text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
+    if remove_accents:
+        text = unicodedata.normalize('NFD', text)
+        text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
     
     # 2. Remove punctuation and spaces (keep only letters)
-    text = ''.join(c for c in text if c.isalpha())
+    if only_letters:
+        text = ''.join(c for c in text if c.isalpha())
     
-    # 3. Optional: uppercase (common for ciphers)
+    # 3. Turn to uppercase (common for ciphers)
     if upper:
         text = text.upper()
     return text

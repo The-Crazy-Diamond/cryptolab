@@ -4,7 +4,8 @@
 -----------------------------------------------------------
 ## Tasks
 ### To do (priority)
-- [ ] Improve normalize in utils.text
+- [X] Improve normalize in utils.text
+- [ ] Check where normalize is called and make sure that mono_normalize is not anymore
 - [ ] normalization protocol to add to cipher model
 - [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
 - [ ] break_long_words issue in utils/formatting.py
@@ -12,17 +13,13 @@
 - [ ] Improve helpers (for ciphers in particular, and also for solvers...).
 - [ ] Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
 - [ ] improve save() and load() in MonoSession
-- [X] Improve kasiski
-- [ ] Implement ioc and modify README:
-
-            ### Use analysis methods
-            
-            ```bash
-       git     cryptolab analyse frequency message.txt
-            cryptolab analyse ngrams message.txt 3
-            cryptolab analyse ioc message.txt
-            cryptolab analyse kasiski message.txt
-            ```
+- [ ] automatic solve for vigenere cipher (see pp.84-87 in book)
+- [ ] Implement Polyalphabetic solver
+- [ ] Implement Vigenere solver
+- [ ] Complete README file once Polyalphabetic and Vigenere solvers are implemented
+- [ ] Create super class CryptoSession. MonoSession and PolySession share many properties
+- [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
+- [ ] Active key_index in PolySession
 
 
 ### To do (secondary)

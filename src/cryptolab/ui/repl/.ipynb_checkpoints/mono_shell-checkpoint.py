@@ -6,7 +6,6 @@ from cryptolab.analysis.methods.ngrams import get_ngrams, NGRAM_NAMES
 
 import json
 from pathlib import Path
-from functools import partial
 
 class MonoShell(Shell):
 
@@ -128,7 +127,7 @@ class MonoShell(Shell):
         self.status = "Session reset."
 
     # Analysis commands
-    def do_ngrams(self,n:str):
+    def do_ngrams(self, n: str):
         """
         Toggle the display of n-grams.
     
@@ -156,9 +155,7 @@ class MonoShell(Shell):
         
         Usage:
             frequencies
-        """
-
-        
+        """        
         self.do_ngrams(1)
     
     def do_bigrams(self):

@@ -51,6 +51,7 @@ class Shell:
     def execute(self, command: str):
         self.status = None
         if not command:
+            self.status = f"Type 'help' to show commands."
             self.display()
             return
             

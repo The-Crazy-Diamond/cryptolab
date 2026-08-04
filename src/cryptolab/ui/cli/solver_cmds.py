@@ -2,7 +2,7 @@ import typer
 
 from cryptolab.utils.io import load_input
 from cryptolab.analysis.solvers import caesar_bruteforce, affine_bruteforce
-from cryptolab.analysis.solvers import monoalphabetic
+from cryptolab.analysis.solvers import monoalphabetic, polyalphabetic
 
 app = typer.Typer()
 
@@ -23,5 +23,10 @@ def affine(input_data: str, argument:str):
 def mono(input_data: str):
     text = load_input(input_data)
     monoalphabetic.solve(text)
+
+@app.command(polyalphabetic.NAME)
+def poly(input_data: str):
+    text = load_input(input_data)
+    polyalphabetic.solve(text)
 
 
