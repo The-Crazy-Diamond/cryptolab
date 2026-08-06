@@ -11,6 +11,7 @@ class PolySession:
     def __init__(self, ciphertext: str) -> None:
         self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True)
         self._key_length = None
+        self._active_index = None
         self._mono_sessions = {}
         # self.history = []
         # self.future = []
@@ -28,8 +29,14 @@ class PolySession:
             return None
 
     @property
-    def mono_sessions(self)-> int:
-        return self._mono_sessions.copy()
+    def active_index(self)-> int:
+        if self.key_length_defined:
+            return self._active_index
+        else:
+            return None
+
+    def get_mono_session(self, key_index):
+        return self._mono_sessions[key_index]
 
     # Other properties
     @property
@@ -48,18 +55,25 @@ class PolySession:
             
     @property
     def key_length_defined(self):
-        return self._key_length != None
+        return self._key_length is not None
         
     def key_length_check(self):
         if not self.key_length_defined:
-            raise ValueError(f"Key's length is not defined. Cannot perform operation.")
+            raise ValueError(f"Key length is not defined. Cannot perform operation.")
 
-    # Key length setting method
+    # Setters
     def set_key_length(self, key_length: int):
+        if key_length < 0:
+            raise ValueError("Key length must be non negative.")
         self._key_length = key_length
         pure_ciphertext = normalize(self._ciphertext, remove_accents = True, only_letters = True, upper = True)
         for k in range(key_length):
             self._mono_sessions[k] = MonoSession(pure_ciphertext[k::key_length])
+            self._active_index = 0
+
+    def set_active_index(self, key_index: int):
+        self.key_length_check()
+        self._active_index = key_index % self.key_length
 
 
     # Modifying methods
@@ -113,6 +127,7 @@ class PolySession:
         
     def reset(self) -> None:
         self._key_length = None
+        self._active_index = None
         self._mono_sessions = {}
     #     # 1. Validate
     #     # nothing to do

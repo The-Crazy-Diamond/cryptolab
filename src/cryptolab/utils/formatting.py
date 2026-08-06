@@ -8,8 +8,16 @@ import textwrap
 # color helpers (if using rich)
 
 def clear_screen() -> None:
-    # ANSI escape sequence to clear the screen
-    print("\033[H\033[J", end="")
+    """
+    ANSI escape sequence to clear the screen.\033[2J clears the visible screen,
+    \033[H moves the cursor home,
+    \033[3J requests clearing the scrollback buffer (supported by many terminals).
+    \033[2J clears the visible screen,
+    """
+    print("\033[3J\033[H\033[2J", end="")
+
+def wrap_fixed(text: str, width: int):
+    return [text[i:i + width] for i in range(0, len(text), width)]
 
     
 def print_stacked(*strings, width=None, break_long_words=True):
@@ -23,14 +31,9 @@ def print_stacked(*strings, width=None, break_long_words=True):
     """
     if width is None:
         width = shutil.get_terminal_size(fallback=(120, 20)).columns
-
+        
     wrapped_blocks = [
-        textwrap.wrap(
-            s,
-            width=width,
-            break_long_words=break_long_words,
-            break_on_hyphens=break_long_words,
-        )
+        wrap_fixed(s, width)
         for s in strings
     ]
 
@@ -70,4 +73,3 @@ def print_banner(*titles, width=None, symbol='='):
         right = max(0, padding - left)
 
         print(symbol * left + title + symbol * right)
-    

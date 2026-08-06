@@ -16,15 +16,7 @@ def normalize(text: str, remove_accents: bool = True, only_letters: bool = True,
     if upper:
         text = text.upper()
     return text
-    
-def mono_normalize(text: str) -> str: # provisary version for MonoSession, to get rid of once normalize is improved
-    # NOTE: Currently also used for PolySession and VigenereSession
-    #1 and 3 yes, 2 no
-    text = unicodedata.normalize('NFD', text)
-    text = ''.join(c for c in text if unicodedata.category(c) != 'Mn')
-    return text.upper()
 
-    
 def common_chars(*strings):
     seen = set()
     for s in strings:
@@ -37,7 +29,7 @@ def common_chars(*strings):
 def add_spaces(text):
     new = ''.join(char + ' ' for char in text)
     return new[:-1]
-
+    
 def modify_string(string: str, index: int, char: str):
     """
     Change char in a string at specified index 

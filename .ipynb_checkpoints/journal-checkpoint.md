@@ -20,6 +20,8 @@
 - [ ] Create super class CryptoSession. MonoSession and PolySession share many properties
 - [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
 - [ ] Active key_index in PolySession
+- [ ] Create class Ciphertext to deal with every annoying things linked with formatting, spaces and punctation management
+- [ ] Garde fous in functions: do it in Shell or Session
 
 
 ### To do (secondary)

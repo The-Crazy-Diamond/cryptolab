@@ -32,7 +32,8 @@ class PolyShell(Shell):
             "kasiski": self.do_kasiski,
             "ioc": self.do_ioc,
 
-            "setKey": self.do_set_key_length,
+            "keylen": self.do_set_key_length,
+            "active": self.do_set_active_index,
             "show": self.do_show,
             "undo": self.do_undo,
             "redo": self.do_redo,
@@ -53,17 +54,38 @@ class PolyShell(Shell):
             
             "freq": "frequencies",
 
-            "sk": "setKey",
+            "kl": "keylen",
+            "a": "active",
         })
 
         return aliases
 
     def display_content(self):
+       
+        if self.session.key_length is None:
+            index_line = ""
+        else:
+            indicators = []
+            letter_index = 0
+        
+            for c in self.session.ciphertext:
+                if c.isalpha():
+                    if letter_index % self.session.key_length == self.session.active_index:
+                        indicators.append('^')
+                    else:
+                        indicators.append(' ')
+                    letter_index += 1
+                else:
+                    indicators.append(' ')
+        
+            index_line = "".join(indicators)
+            
         print_stacked(
             add_spaces(self.session.ciphertext),
             add_spaces(self.session.plaintext),
+            add_spaces(index_line),    
         )
-        
+            
         # print(
         #     '\nUnassigned ciphertext characters: ',
         #       add_spaces(''.join(self.session.cipher_chars_to_assign)),
@@ -72,6 +94,14 @@ class PolyShell(Shell):
         #     '\nUnassigned plaintext characters: ',
         #     add_spaces(''.join(self.session.plain_chars_to_assign)),'\n',
         # )
+
+        if self.session.key_length is None:
+            key_length = "undefined"
+            active_index = "undefined"
+        else:
+            key_length = self.session.key_length
+            active_index = self.session.active_index
+        print(f"Key length = {key_length} ; Active index = {active_index}")
         
         if self.visible_frequencies:
             print(f"Key index | Frequencies for indices mod {self.session.key_length} ")
@@ -81,9 +111,11 @@ class PolyShell(Shell):
     # Modifying commands
     def treat_index(self, key_index):
         self.session.key_length_check()
+        if key_index == None:
+            key_index = self.session.active_index
         return int(key_index) % self.session.key_length
         
-    def do_map(self, cipher, plain, key_index):
+    def do_map(self, cipher, plain, key_index = None):
         """
         Assign a plaintext letter to a ciphertext letter at every index that are congruent to a key index modulo the key's length.
     
@@ -97,7 +129,7 @@ class PolyShell(Shell):
         self.session.assign(cipher, plain, key_index)
         self.status = f"Mapped {cipher} -> {plain} at indices {key_index} mod {self.session.key_length}"
 
-    def do_unmap(self, cipher, key_index):
+    def do_unmap(self, cipher, key_index = None):
         """
         Unassign the plaintext letter of a ciphertext letter at every index that are congruent to a key index modulo the key's length.
     
@@ -111,7 +143,7 @@ class PolyShell(Shell):
         self.session.unassign(cipher, key_index)
         self.status = f"Unassigned {cipher} at indices {key_index} mod {self.session.key_length}"
 
-    def do_swap(self, cipher1, cipher2, key_index):
+    def do_swap(self, cipher1, cipher2, key_index = None):
         """
         Swap two existing assignments at every index that are congruent to a key index modulo the key's length.
     
@@ -133,10 +165,12 @@ class PolyShell(Shell):
             reset
         """
         self.session.reset()
+        self.visible_frequencies = set()
+        self.frequencies_cache = {}
         self.status = "Session reset."
 
     # Analysis commands          
-    def do_frequencies(self, key_index):
+    def do_frequencies(self, key_index = None):
         """
         Toggle the display of letter frequencies at every index that are congruent to a key index modulo the key's length.
         
@@ -155,7 +189,7 @@ class PolyShell(Shell):
         self.status = None
 
         if key_index not in self.frequencies_cache:
-            self.frequencies_cache[key_index] = get_frequencies(self.session.ciphertext)
+            self.frequencies_cache[key_index] = get_frequencies(self.session.get_mono_session(key_index).ciphertext)
             self.status = f"Cached frequencies for indices congruent to {key_index} mod {self.session.key_length}"
     
     def do_kasiski(self, ngram_size = 3, key_length_bound = 10, score_margin = 5):
@@ -199,8 +233,23 @@ class PolyShell(Shell):
         """
         key_length = int(key_length)
         self.session.set_key_length(key_length)
+        self.visible_frequencies = set()
+        self.frequencies_cache = {}
         self.status = f"Key length set to {key_length}."
 
+    def do_set_active_index(self, key_index):
+        """
+        Set the active key index.
+        
+        Usage:
+             setActive <key_index>
+    
+        Example:
+             setActive 2
+        """
+        key_index = int(key_index)
+        self.session.set_active_index(key_index)
+        self.status = f"Active key index set to {key_index}."
     
     def do_show(self):
         """

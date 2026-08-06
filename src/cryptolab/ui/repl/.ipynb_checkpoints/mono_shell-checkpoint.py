@@ -61,6 +61,7 @@ class MonoShell(Shell):
         print_stacked(
             add_spaces(self.session.ciphertext),
             add_spaces(self.session.plaintext),
+            "",
         )
         
         print(
