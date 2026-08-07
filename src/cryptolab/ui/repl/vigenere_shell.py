@@ -1,204 +1,123 @@
-from cryptolab.ui.repl.shell import Shell
+from cryptolab.ui.repl.poly_shell import PolyShell
 from cryptolab.analysis.solvers.vigenere.session import VigenereSession
 from cryptolab.utils.text import add_spaces
 from cryptolab.utils.formatting import print_stacked
-from cryptolab.analysis.methods.ngrams import get_ngrams, NGRAM_NAMES
-
+from cryptolab.analysis.methods.frequency import get_frequencies
+from cryptolab.analysis.methods.kasiski import analyse as kasiski_test
+from cryptolab.analysis.methods.coincidence_test import analyse as ioc_test
 import json
 from pathlib import Path
-from functools import partial
 
 class VigenereShell(PolyShell):
 
     TITLE = "Vigenere cipher"
     PROMPT = "vigenere> "
+    
     def __init__(self, session: VigenereSession):
-        super().__init__()
-        self.session = session
-        self.visible_ngrams = set()
-        self.ngrams_cache = {}
+        super().__init__(session)
         self.status = "Vigenere session initialized. \n" + self.status
         
 
     def build_commands(self):
         commands = super().build_commands()
-        commands.update({
-            "map": self.do_map,
-            "unmap": self.do_unmap,
-            "swap": self.do_swap,
-            "reset": self.do_reset,
-            
-            "ngrams": self.do_ngrams,
-            "frequencies": self.do_frequencies,
-            "bigrams": self.do_bigrams,
-            "trigrams": self.do_trigrams,
-            "quadgrams": self.do_quadgrams,
-            
-            "show": self.do_show,
-            "undo": self.do_undo,
-            "redo": self.do_redo,
+        
+        # Remove commands that don't apply
+        commands.pop("swap", None)
     
-            "save": self.do_save,
-            "load": self.do_load,
+        # Add Vigenère-specific commands
+        commands.update({
+            "shift": self.do_shift,
+            "key": self.do_key,
         })
-
+            
         return commands
 
     def build_aliases(self):
         aliases = super().build_aliases()
+        
+        # Remove aliases that don't apply
+        aliases.pop("s", None)
+    
+        # Add Vigenère-specific aliases
         aliases.update({
-            "m": "map",
-            "u": "unmap",
-            "s": "swap",
-            "r": "reset",
-            
-            "ng": "ngrams",
-            "freq": "frequencies",
+            "s": "shift",
+            "k": "key",
         })
 
         return aliases
 
-    def display_content(self):
-        print_stacked(
-            add_spaces(self.session.ciphertext),
-            add_spaces(self.session.plaintext),
-        )
-        
-        print(
-            '\nUnassigned ciphertext characters: ',
-              add_spaces(''.join(self.session.cipher_chars_to_assign)),
-        )
-        print(
-            '\nUnassigned plaintext characters: ',
-            add_spaces(''.join(self.session.plain_chars_to_assign)),'\n',
-        )
-        
-        for n in sorted(self.visible_ngrams):
-            name = NGRAM_NAMES.get(n, f"{n}-grams")
-            print(f"{name}: {self.ngrams_cache[n]}")
+    def display_key_state(self):
+        super().display_key_state()
+        key = self.session.key
+        if key is None:
+            key = "undefined"
+        print(f"Key = {key}")
 
     # Modifying commands
-    def do_map(self, cipher, plain):
+    def do_shift(self, shift, key_index = None):
         """
-        Assign a plaintext letter to a ciphertext letter.
+        Assign a shift at every index that are congruent to a key index modulo the key's length.
     
         Usage:
-            map <cipher> <plain>
+            map <shift> <key_index>
     
         Example:
-            map X e
+            map 17 2
         """
-        self.session.assign(cipher,plain)
-        self.status = f"Mapped {cipher} -> {plain}"
+        key_index = self.treat_index(key_index)
+        shift = int(shift) % 26
+        self.session.assign_shift(shift, key_index)
+        self.status = f"Set shift to {shift} at indices {key_index} mod {self.session.key_length}"
 
-    def do_unmap(self, cipher):
+        
+    def do_map(self, cipher, plain, key_index = None):
         """
-        Unassign the plaintext letter of a ciphertext letter.
+        Assign a plaintext letter to a ciphertext letter at every index that are congruent to a key index modulo the key's length. The shift will be applied in consequence.
     
         Usage:
-            unmap <cipher>
+            map <cipher> <plain> <key_index>
     
         Example:
-            unmap X
+            map X e 2
         """
-        self.session.unassign(cipher)
-        self.status = f"Unassigned {cipher}"
+        key_index = self.treat_index(key_index)
+        self.session.assign(cipher, plain, key_index)
+        self.status = f"Mapped {cipher} -> {plain} at indices {key_index} mod {self.session.key_length}"
 
-    def do_swap(self, cipher1, cipher2):
+    def do_unmap(self, key_index = None):
         """
-        Swap two existing assignments.
+        Unassign the plaintext letter at every index that are congruent to a key index modulo the key's length.
     
         Usage:
-            swap <cipher1> <cipher2>
+            unmap <key_index>
     
         Example:
-            swap X Y
+            unmap 3
         """
-        self.session.swap(cipher1,cipher2)
-        self.status = f"Swapped {cipher1} <-> {cipher2}"
-    
-    def do_reset(self):
+        key_index = self.treat_index(key_index)
+        self.session.unassign(key_index)
+        self.status = f"Letters unassigned at indices {key_index} mod {self.session.key_length}"
+        
+    def do_key(self, keyword):
         """
-        Reset the session.
-    
-        Usage:
-            reset
-        """
-        self.session.reset()
-        self.status = "Session reset."
+        Set the key of the Vigenere cipher.
 
-    # Analysis commands
-    def do_ngrams(self,n:str):
-        """
-        Toggle the display of n-grams.
-    
         Usage:
-            ngrams <n>
-    
+            key <keyword>
+
         Example:
-            ngrams 2
+            key CRYPTO
         """
-        n = int(n)
+        raise NotImplementedError
 
-        if n in self.visible_ngrams:
-            self.visible_ngrams.remove(n)
-        else:
-            self.visible_ngrams.add(n)
-        self.status = None
-
-        if n not in self.ngrams_cache:
-            self.ngrams_cache[n] = get_ngrams(self.session.ciphertext, n)
-            self.status = f"Cached {NGRAM_NAMES.get(n, f"{n}-grams")}"
-            
-    def do_frequencies(self):
-        """
-        Toggle the display of letter frequencies.
-        
-        Usage:
-            frequencies
-        """
-
-        
-        self.do_ngrams(1)
+    def _cache_frequencies(self, key_index):
+        """Ensure frequencies for one key index are cached."""
+        if key_index not in self.frequencies_cache:
+            subcipher = ("".join([c for c in self.session.ciphertext]))[key_index::self.session.key_length]
+            self.frequencies_cache[key_index] = get_frequencies(subcipher)
+            return True
+        return False
     
-    def do_bigrams(self):
-        """
-        Toggle the display of bigrams.
-        
-        Usage:
-            bigrams
-        """
-        self.do_ngrams(2)
-    
-    def do_trigrams(self):
-        """
-        Toggle the display of trigrams.
-        
-        Usage:
-            trigrams
-        """
-        self.do_ngrams(3)
-    
-    def do_quadgrams(self):
-        """
-        Toggle the display of quadgrams.
-        
-        Usage:
-            quadgrams
-        """
-        self.do_ngrams(4)
-            
-
-    # Session commands
-    def do_show(self):
-        """
-        Print the current plaintext state.
-    
-        Usage:
-            show
-        """
-        self.status = f"Plaintext: '{self.session.plaintext}'"
-
     def do_undo(self):
         """
         Undo last command.
@@ -221,9 +140,9 @@ class VigenereShell(PolyShell):
 
     # Saving/loading commands
         
-    def do_save(self, filename="monoalphabetic.json"):
+    def do_save(self, filename="polyalphabetic.json"):
         """
-        Save the session in a JSON file. (By thefault, filename is "monoalphabetic.json".)
+        Save the session in a JSON file. (By thefault, filename is "polyalphabetic.json".)
     
         Usage:
             save <filename>
@@ -231,20 +150,21 @@ class VigenereShell(PolyShell):
         Example:
             save my_session.json
         """
-        path = Path(filename)
+        raise NotImplementedError
+        # path = Path(filename)
     
-        if path.exists():
-            answer = input(f"'{filename}' already exists. Overwrite? [y/N] ")
-            if answer.lower() not in ("y", "yes"):
-                self.status = "Save cancelled."
-                return
+        # if path.exists():
+        #     answer = input(f"'{filename}' already exists. Overwrite? [y/N] ")
+        #     if answer.lower() not in ("y", "yes"):
+        #         self.status = "Save cancelled."
+        #         return
     
-        with path.open("w") as f:
-            json.dump(self.session.to_dict(), f, indent=4)
+        # with path.open("w") as f:
+        #     json.dump(self.session.to_dict(), f, indent=4)
     
-        self.status = f"Session saved to '{filename}'."
+        # self.status = f"Session saved to '{filename}'."
         
-    def do_load(self, filename="monoalphabetic.json"):
+    def do_load(self, filename="polyalphabetic.json"):
         """
         Load the session from a JSON file.
     
@@ -252,24 +172,25 @@ class VigenereShell(PolyShell):
             load <filename>
     
         Example:
-            load monoalphabetic.json
+            load polyalphabetic.json
         """
-        path = Path(filename)
+        raise NotImplementedError
+        # path = Path(filename)
     
-        if not path.exists():
-            raise ValueError(f"'{filename}' does not exist.")
+        # if not path.exists():
+        #     raise ValueError(f"'{filename}' does not exist.")
     
-        with path.open() as f:
-            data = json.load(f)
+        # with path.open() as f:
+        #     data = json.load(f)
 
-        if data["analyse_tool"] != "monoalphabetic":
-            raise ValueError("Not a monoalphabetic session.")
+        # if data["analyse_tool"] != "polyalphabetic":
+        #     raise ValueError("Not a polyalphabetic session.")
     
-        session = MonoSession(data["ciphertext"])
-        session._mapping = data["mapping"]
+        # session = MonoSession(data["ciphertext"])
+        # session._mapping = data["mapping"]
     
-        self.session = session
-        self.status = f"Session loaded from '{filename}'."
+        # self.session = session
+        # self.status = f"Session loaded from '{filename}'."
         
         
     

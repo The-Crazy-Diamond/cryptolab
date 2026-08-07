@@ -1,7 +1,6 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import normalize
 from cryptolab.analysis.solvers.monoalphabetic.session import MonoSession
-import string
                     
 class PolySession:
     """
@@ -12,9 +11,12 @@ class PolySession:
         self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True)
         self._key_length = None
         self._active_index = None
-        self._mono_sessions = {}
+        self._init_key_state()
         # self.history = []
         # self.future = []
+        
+    def _init_key_state(self):
+        self._mono_sessions = {}
         
     # Getters    
     @property
@@ -66,10 +68,13 @@ class PolySession:
         if key_length < 0:
             raise ValueError("Key length must be non negative.")
         self._key_length = key_length
+        self.set_key_state(key_length)
+        self._active_index = 0
+        
+    def set_key_state(self, key_length: int):
         pure_ciphertext = normalize(self._ciphertext, remove_accents = True, only_letters = True, upper = True)
         for k in range(key_length):
             self._mono_sessions[k] = MonoSession(pure_ciphertext[k::key_length])
-            self._active_index = 0
 
     def set_active_index(self, key_index: int):
         self.key_length_check()
@@ -128,7 +133,7 @@ class PolySession:
     def reset(self) -> None:
         self._key_length = None
         self._active_index = None
-        self._mono_sessions = {}
+        self.reset_key_state()
     #     # 1. Validate
     #     # nothing to do
     #     # 2. Save current state
@@ -136,6 +141,9 @@ class PolySession:
     #     # 3. Modify state
     #     self._mapping = initial_mapping()
 
+    def reset_key_state(self):
+        self._mono_sessions = {}
+    
     # #Undo/redo methods
     def checkpoint(self):
         raise NotImplementedError('Checkpoint not implemented.')

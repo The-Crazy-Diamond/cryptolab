@@ -14,12 +14,14 @@
 - [ ] automatic solve for vigenere cipher (see pp.84-87 in book)
 - [X] Implement Polyalphabetic solver
 - [ ] Implement Vigenere solver
+- [ ] Add key to VigenereSession attribute and a display feature in VigenereShell
 - [ ] Complete README file once Polyalphabetic and Vigenere solvers are implemented
 - [ ] Create super class CryptoSession. MonoSession and PolySession share many properties
 - [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
 - [X] Active key_index in PolySession
 - [ ] Create class Ciphertext to deal with every annoying things linked with formatting, spaces and punctation management
 - [ ] Garde fous in functions: do it in Shell or Session ?
+- [ ] Unvalid arguments for unmap in Vigenere solver
 
 
 ### To do (secondary)

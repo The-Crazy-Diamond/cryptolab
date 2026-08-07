@@ -2,7 +2,7 @@ import typer
 
 from cryptolab.utils.io import load_input
 from cryptolab.analysis.solvers import caesar_bruteforce, affine_bruteforce
-from cryptolab.analysis.solvers import monoalphabetic, polyalphabetic
+from cryptolab.analysis.solvers import monoalphabetic, polyalphabetic, vigenere
 
 app = typer.Typer()
 
@@ -28,5 +28,10 @@ def mono(input_data: str):
 def poly(input_data: str):
     text = load_input(input_data)
     polyalphabetic.solve(text)
+
+@app.command(vigenere.NAME)
+def vige(input_data: str):
+    text = load_input(input_data)
+    vigenere.solve(text)
 
 
