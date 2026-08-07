@@ -1,4 +1,5 @@
 from collections import Counter
+from cryptolab.utils.text import normalize
 
 NAME = "ngrams"
 DESCRIPTION = "Display the number of occurences of each ngram in text"
@@ -11,24 +12,9 @@ NGRAM_NAMES = {
     3: "Trigrams",
     4: "Quadgrams",
 }
-
-def get_ngrams(
-    text: str,
-    n: int = 1,
-    *,
-    ignore_spaces: bool = True,
-    normalize_case: bool = True,
-    alpha_only: bool = False,
-) -> dict:
-    if normalize_case:
-        text = text.upper()
-
-    # Filtering step (shared logic)
-    if ignore_spaces:
-        text = "".join(c for c in text if not c.isspace())
-
-    if alpha_only:
-        text = "".join(c for c in text if c.isalpha())
+def get_ngrams(text: str, n: int = 1) -> dict:
+    text = normalize(text, remove_accents = True, only_letters = True, upper = True, remove_line_breaks = True)
+    # only_letter = True logic: we are not interested in spaces or punctuation. However "THE SECRET" implies counting "ES"...to think about
 
     # Edge case
     if n <= 0 or len(text) < n:
@@ -39,6 +25,34 @@ def get_ngrams(
     counts = Counter(ngrams)
 
     return dict(sorted(counts.items(), key=lambda x: x[1], reverse=True))
+
+# def get_ngrams(
+#     text: str,
+#     n: int = 1,
+#     *,
+#     ignore_spaces: bool = True,
+#     normalize_case: bool = True,
+#     alpha_only: bool = False,
+# ) -> dict:
+#     if normalize_case:
+#         text = text.upper()
+
+#     # Filtering step (shared logic)
+#     if ignore_spaces:
+#         text = "".join(c for c in text if not c.isspace())
+
+#     if alpha_only:
+#         text = "".join(c for c in text if c.isalpha())
+
+#     # Edge case
+#     if n <= 0 or len(text) < n:
+#         return {}
+
+#     # Build n-grams
+#     ngrams = (text[i:i+n] for i in range(len(text) - n + 1))
+#     counts = Counter(ngrams)
+
+#     return dict(sorted(counts.items(), key=lambda x: x[1], reverse=True))
 
 def analyse(text: str, n: str) -> dict:
     

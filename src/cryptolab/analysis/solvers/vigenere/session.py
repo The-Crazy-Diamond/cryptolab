@@ -30,7 +30,7 @@ class VigenereSession(PolySession):
     TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
         
-        self.ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True) 
+        self.ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True) 
         self._mapping = initial_mapping()
         self.history = []
         self.future = []

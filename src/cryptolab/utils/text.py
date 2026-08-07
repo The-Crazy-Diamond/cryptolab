@@ -2,7 +2,7 @@ import unicodedata
 import string
 import secrets
 
-def normalize(text: str, remove_accents: bool = True, only_letters: bool = True, upper: bool = True) -> str:
+def normalize(text: str, remove_accents: bool = True, only_letters: bool = True, upper: bool = True, remove_line_breaks = True) -> str:
     # 1. Remove accents
     if remove_accents:
         text = unicodedata.normalize('NFD', text)
@@ -15,6 +15,11 @@ def normalize(text: str, remove_accents: bool = True, only_letters: bool = True,
     # 3. Turn to uppercase (common for ciphers)
     if upper:
         text = text.upper()
+
+    # 4. Remove line breaks
+    if remove_line_breaks:
+        text = text.replace("\n", "")
+        
     return text
 
 def common_chars(*strings):

@@ -54,7 +54,7 @@ class PolyShell(Shell):
             
             "freq": "frequencies",
 
-            "kl": "keylen",
+            "k": "keylen",
             "a": "active",
         })
 
@@ -85,15 +85,6 @@ class PolyShell(Shell):
             add_spaces(self.session.plaintext),
             add_spaces(index_line),    
         )
-            
-        # print(
-        #     '\nUnassigned ciphertext characters: ',
-        #       add_spaces(''.join(self.session.cipher_chars_to_assign)),
-        # )
-        # print(
-        #     '\nUnassigned plaintext characters: ',
-        #     add_spaces(''.join(self.session.plain_chars_to_assign)),'\n',
-        # )
 
         if self.session.key_length is None:
             key_length = "undefined"
@@ -104,15 +95,27 @@ class PolyShell(Shell):
         print(f"Key length = {key_length} ; Active index = {active_index}")
         
         if self.visible_frequencies:
-            print(f"Key index | Frequencies for indices mod {self.session.key_length} ")
+            print(f"Key index | Frequencies for indices mod {self.session.key_length} \n")
             for n in sorted(self.visible_frequencies):
-                print(f"{n:9} : {self.frequencies_cache[n]}")
+                print(f"{n:9} : {self.frequencies_cache[n]}\n")
 
     # Modifying commands
+    # def treat_index(self, key_index):
+    #     self.session.key_length_check()
+    #     if key_index == None:
+    #         key_index = self.session.active_index
+    #     if key_index in ['a','all']:
+    #         return key_index
+    #     return int(key_index) % self.session.key_length
     def treat_index(self, key_index):
         self.session.key_length_check()
-        if key_index == None:
-            key_index = self.session.active_index
+    
+        if key_index is None:
+            return self.session.active_index
+    
+        if isinstance(key_index, str) and key_index.lower() in ("a", "all"):
+            return "all"
+    
         return int(key_index) % self.session.key_length
         
     def do_map(self, cipher, plain, key_index = None):
@@ -170,27 +173,88 @@ class PolyShell(Shell):
         self.status = "Session reset."
 
     # Analysis commands          
-    def do_frequencies(self, key_index = None):
-        """
-        Toggle the display of letter frequencies at every index that are congruent to a key index modulo the key's length.
+    # def do_frequencies(self, key_index = None):
+    #     """
+    #     Toggle the display of letter frequencies at every index that are congruent to a key index modulo the key's length.
         
-        Usage:
-             frequencies <key_index>
+    #     Usage:
+    #          frequencies <key_index>
     
-        Example:
-             frequencies 4
+    #     Example:
+    #          frequencies 4
+    #     """
+    #     key_index = self.treat_index(key_index)
+        
+    #     if key_index in ["all","a"]:
+    #         if len(self.visible_frequencies) == self.session.key_length:
+    #             self.visible_frequencies = set()
+    #         else:
+    #             self.visible_frequencies = set(range(self.session.key_length))
+    #             for key_index in range(self.session.key_length):
+    #                 self.frequencies_cache[key_index] = get_frequencies(self.session.get_mono_session(key_index).ciphertext)
+    #             self.status = f"Cached frequencies for all indices."
+    #     else:
+    #         if key_index in self.visible_frequencies:
+    #             self.visible_frequencies.remove(key_index)
+    #         else:
+    #             self.visible_frequencies.add(key_index)
+    #         self.status = None
+    
+    #         if key_index not in self.frequencies_cache:
+    #             self.frequencies_cache[key_index] = get_frequencies(self.session.get_mono_session(key_index).ciphertext)
+    #             self.status = f"Cached frequencies for indices congruent to {key_index} mod {self.session.key_length}"
+
+    def _cache_frequencies(self, key_index):
+        """Ensure frequencies for one key index are cached."""
+        if key_index not in self.frequencies_cache:
+            self.frequencies_cache[key_index] = get_frequencies(
+                self.session.get_mono_session(key_index).ciphertext
+            )
+            return True
+        return False
+
+
+    def do_frequencies(self, key_index=None):
+        """
+        Toggle the display of letter frequencies.
+    
+        Usage:
+            frequencies [index|all]
         """
         key_index = self.treat_index(key_index)
-
+    
+        # Toggle all
+        if key_index in ("all", "a"):
+            if len(self.visible_frequencies) == self.session.key_length:
+                self.visible_frequencies.clear()
+                self.status = None
+            else:
+                self.visible_frequencies = set(range(self.session.key_length))
+    
+                newly_cached = 0
+                for i in range(self.session.key_length):
+                    if self._cache_frequencies(i):
+                        newly_cached += 1
+    
+                self.status = (
+                    f"Cached frequencies for {newly_cached} new indices."
+                    if newly_cached
+                    else None
+                )
+            return
+    
+        # Toggle one index
         if key_index in self.visible_frequencies:
             self.visible_frequencies.remove(key_index)
         else:
             self.visible_frequencies.add(key_index)
-        self.status = None
-
-        if key_index not in self.frequencies_cache:
-            self.frequencies_cache[key_index] = get_frequencies(self.session.get_mono_session(key_index).ciphertext)
-            self.status = f"Cached frequencies for indices congruent to {key_index} mod {self.session.key_length}"
+    
+        if self._cache_frequencies(key_index):
+            self.status = (
+                f"Cached frequencies for index {key_index}."
+            )
+        else:
+            self.status = None
     
     def do_kasiski(self, ngram_size = 3, key_length_bound = 10, score_margin = 5):
         """

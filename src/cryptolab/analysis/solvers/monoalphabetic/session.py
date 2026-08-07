@@ -18,7 +18,7 @@ class MonoSession:
     """
     TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
-        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True) 
+        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True) 
         self._mapping = initial_mapping()
         self.history = []
         self.future = []

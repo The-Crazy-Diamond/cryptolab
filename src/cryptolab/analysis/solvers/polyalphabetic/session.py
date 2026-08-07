@@ -9,7 +9,7 @@ class PolySession:
     """
     TOOL = "polyalphabetic"
     def __init__(self, ciphertext: str) -> None:
-        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True)
+        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True)
         self._key_length = None
         self._active_index = None
         self._mono_sessions = {}
