@@ -5,27 +5,22 @@
 ## Tasks
 ### To do (priority)
 - [ ] normalization protocol to add to cipher model
-- [ ] improve frequencies, ngrams to perhaps avoid counting punctuation or spaces
-- [ ] break_long_words issue in utils/formatting.py
 - [ ] factory for solvers' commands and template models for folder and files solvers
 - [ ] Improve helpers (for ciphers in particular, and also for solvers...).
 - [ ] Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
-- [ ] improve save() and load() in MonoSession
+- [ ] improve save() and load() in MonoSession...and other solvers
 - [ ] automatic solve for vigenere cipher (see pp.84-87 in book)
-- [X] Implement Polyalphabetic solver
-- [ ] Implement Vigenere solver
-- [ ] Add key to VigenereSession attribute and a display feature in VigenereShell
-- [ ] Complete README file once Polyalphabetic and Vigenere solvers are implemented
-- [ ] Create super class CryptoSession. MonoSession and PolySession share many properties
 - [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
-- [X] Active key_index in PolySession
-- [ ] Create class Ciphertext to deal with every annoying things linked with formatting, spaces and punctation management
 - [ ] Garde fous in functions: do it in Shell or Session ?
 - [ ] Unvalid arguments for unmap in Vigenere solver
+- [ ] Language recognition using the distance between frequencies vector (of text and statistical reference of language)
 
 
 ### To do (secondary)
+- [ ] Create super class CryptoSession. MonoSession and PolySession share many properties
+- [ ] Create class Ciphertext to deal with every annoying things linked with formatting, spaces and punctation management
 - [ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
+- [ ] break_long_words issue in utils/formatting.py
 - [ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
 ```
 def func(*args, **kwargs):
@@ -42,7 +37,7 @@ func(1, 2, x=10, y=20)
 - [ ] Refactor vigenere using polyalphabetic ?
 - [ ] ADFGVX
 - [ ] bacon, triliteral and Cie
-- [ ] refactor to make bacon a triliteral similar
+- [ ] refactor to make bacon and triliteral similar
 - [ ] Della Porta cipher
 - [ ] Autoclave 
 

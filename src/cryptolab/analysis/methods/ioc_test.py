@@ -1,17 +1,16 @@
 from cryptolab.utils.text import normalize
 from cryptolab.data.indices_of_coincidence import IOC_dict
 from cryptolab.analysis.methods.IOC import index_of_coincidence
-from cryptolab.analysis.methods.MIOC import mutual_index_of_coincidence
 
-NAME = "coincidence_test"
-DESCRIPTION = "Coincidence test tries to determine the length of the keyword used for a Vigenere cipher by using the index of coincidence method."
+NAME = "ioc_test"
+DESCRIPTION = "This test tries to determine the length of the keyword used for a Vigenere cipher by using the index of coincidence method."
 ARGS_HELP = "key_length_bound (int, default = 10)"
 ARGS_EXAMPLE = "7"
 
 
 def analyse(text: str, key_length_bound = 10, coincidence_threshold = 0.06):
     # Treat input
-    text = normalize(text)
+    text = normalize(text, remove_accents = True, only_letters = True, upper = True, remove_line_breaks = True)
     key_length_bound = int(key_length_bound)
     coincidence_threshold = float(coincidence_threshold)
 

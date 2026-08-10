@@ -73,10 +73,12 @@ cryptolab analyse ioc message.txt
 
 ### Use an interactive solver
 
-Interactively solve a ciphertext encrypted with a monoalphabetic substitution:
+Interactively solve a ciphertext encrypted with a monoalphabetic substitution, a Vigenere cipher or a polyalphabetic substitution:
 
 ```bash
 cryptolab solve monoalphabetic message.txt
+cryptolab solve vigenere message.txt
+cryptolab solve polyalphabetic message.txt
 ```
 
 ## Project Structure
@@ -113,7 +115,15 @@ cp analysis/methods/_template.py analysis/methods/my_method.py
 ```
 
 Modify my_method.py and implement the analyse() function.
-  
+
+## Potential future features
+
+- Suggestions and automatic solving for monoalphabetic substitution, Vigenere cipher and polyalphebetic substitution
+- Hill cipher
+- Hill climbing algorithm
+
+
+
 ## Personal note
 
 Cryptolab began as a personal project driven by my interest in classical cryptology. It has become a playground for exploring cryptanalysis, improving my Python skills, and building a well-structured, extensible codebase.

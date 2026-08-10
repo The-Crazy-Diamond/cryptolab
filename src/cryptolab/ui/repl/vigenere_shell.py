@@ -4,7 +4,8 @@ from cryptolab.utils.text import add_spaces
 from cryptolab.utils.formatting import print_stacked
 from cryptolab.analysis.methods.frequency import get_frequencies
 from cryptolab.analysis.methods.kasiski import analyse as kasiski_test
-from cryptolab.analysis.methods.coincidence_test import analyse as ioc_test
+from cryptolab.analysis.methods. ioc_test import analyse as ioc_test
+from cryptolab.analysis.methods.mioc_test import analyse as mioc_test
 import json
 from pathlib import Path
 
@@ -28,6 +29,8 @@ class VigenereShell(PolyShell):
         commands.update({
             "shift": self.do_shift,
             "key": self.do_key,
+
+            "mioc": self.do_mioc,
         })
             
         return commands
@@ -56,7 +59,7 @@ class VigenereShell(PolyShell):
     # Modifying commands
     def do_shift(self, shift, key_index = None):
         """
-        Assign a shift at every index that are congruent to a key index modulo the key's length.
+        Assign a shift at every corresponding indices.
     
         Usage:
             map <shift> <key_index>
@@ -72,7 +75,7 @@ class VigenereShell(PolyShell):
         
     def do_map(self, cipher, plain, key_index = None):
         """
-        Assign a plaintext letter to a ciphertext letter at every index that are congruent to a key index modulo the key's length. The shift will be applied in consequence.
+        Assign a plaintext letter to a ciphertext letter at every corresponding indices. The shift will be applied in consequence.
     
         Usage:
             map <cipher> <plain> <key_index>
@@ -86,7 +89,7 @@ class VigenereShell(PolyShell):
 
     def do_unmap(self, key_index = None):
         """
-        Unassign the plaintext letter at every index that are congruent to a key index modulo the key's length.
+        Unassign the plaintext letter at every corresponding indices.
     
         Usage:
             unmap <key_index>
@@ -110,6 +113,25 @@ class VigenereShell(PolyShell):
         """
         raise NotImplementedError
 
+    def do_mioc(self, key_length = None):
+        """
+        Perform tests using the mutual index of coincidence to guess the key.
+        
+        Usage:
+             mioc <key_length>
+    
+        Example:
+             mioc 6
+        """
+        if key_length == None:
+            # self.session.key_length_check()
+            key_length =  self.session.key_length
+        if key_length == None:
+            self.status = f"Need key length to perform the tests."
+        else:    
+            potential_keywords = mioc_test(self.session.ciphertext, key_length)
+            return True # Returning True allows test to display the results
+        
     def _cache_frequencies(self, key_index):
         """Ensure frequencies for one key index are cached."""
         if key_index not in self.frequencies_cache:
@@ -118,87 +140,77 @@ class VigenereShell(PolyShell):
             return True
         return False
     
-    def do_undo(self):
-        """
-        Undo last command.
+    # def do_undo(self):
+    #     """
+    #     Undo last command.
     
-        Usage:
-            undo
-        """
-        self.session.undo()
-        self.status = "Undo."
+    #     Usage:
+    #         undo
+    #     """
+    #     self.session.undo()
+    #     self.status = "Undo."
     
-    def do_redo(self):
-        """
-        Redo previous undone command.
+    # def do_redo(self):
+    #     """
+    #     Redo previous undone command.
     
-        Usage:
-            redo
-        """
-        self.session.redo()
-        self.status = "Redo."
+    #     Usage:
+    #         redo
+    #     """
+    #     self.session.redo()
+    #     self.status = "Redo."
 
-    # Saving/loading commands
+    # # Saving/loading commands
         
-    def do_save(self, filename="polyalphabetic.json"):
-        """
-        Save the session in a JSON file. (By thefault, filename is "polyalphabetic.json".)
+    # def do_save(self, filename="polyalphabetic.json"):
+    #     """
+    #     Save the session in a JSON file. (By thefault, filename is "polyalphabetic.json".)
     
-        Usage:
-            save <filename>
+    #     Usage:
+    #         save <filename>
     
-        Example:
-            save my_session.json
-        """
-        raise NotImplementedError
-        # path = Path(filename)
+    #     Example:
+    #         save my_session.json
+    #     """
+    #     raise NotImplementedError
+    #     # path = Path(filename)
     
-        # if path.exists():
-        #     answer = input(f"'{filename}' already exists. Overwrite? [y/N] ")
-        #     if answer.lower() not in ("y", "yes"):
-        #         self.status = "Save cancelled."
-        #         return
+    #     # if path.exists():
+    #     #     answer = input(f"'{filename}' already exists. Overwrite? [y/N] ")
+    #     #     if answer.lower() not in ("y", "yes"):
+    #     #         self.status = "Save cancelled."
+    #     #         return
     
-        # with path.open("w") as f:
-        #     json.dump(self.session.to_dict(), f, indent=4)
+    #     # with path.open("w") as f:
+    #     #     json.dump(self.session.to_dict(), f, indent=4)
     
-        # self.status = f"Session saved to '{filename}'."
+    #     # self.status = f"Session saved to '{filename}'."
         
-    def do_load(self, filename="polyalphabetic.json"):
-        """
-        Load the session from a JSON file.
+    # def do_load(self, filename="polyalphabetic.json"):
+    #     """
+    #     Load the session from a JSON file.
     
-        Usage:
-            load <filename>
+    #     Usage:
+    #         load <filename>
     
-        Example:
-            load polyalphabetic.json
-        """
-        raise NotImplementedError
-        # path = Path(filename)
+    #     Example:
+    #         load polyalphabetic.json
+    #     """
+    #     raise NotImplementedError
+    #     # path = Path(filename)
     
-        # if not path.exists():
-        #     raise ValueError(f"'{filename}' does not exist.")
+    #     # if not path.exists():
+    #     #     raise ValueError(f"'{filename}' does not exist.")
     
-        # with path.open() as f:
-        #     data = json.load(f)
+    #     # with path.open() as f:
+    #     #     data = json.load(f)
 
-        # if data["analyse_tool"] != "polyalphabetic":
-        #     raise ValueError("Not a polyalphabetic session.")
+    #     # if data["analyse_tool"] != "polyalphabetic":
+    #     #     raise ValueError("Not a polyalphabetic session.")
     
-        # session = MonoSession(data["ciphertext"])
-        # session._mapping = data["mapping"]
+    #     # session = MonoSession(data["ciphertext"])
+    #     # session._mapping = data["mapping"]
     
-        # self.session = session
-        # self.status = f"Session loaded from '{filename}'."
+    #     # self.session = session
+    #     # self.status = f"Session loaded from '{filename}'."
         
-        
-    
-"""
-Commands to add:
-
-[] suggest
-[] score
-[] dictionary
-[] auto
-"""

@@ -14,12 +14,12 @@ class Shell:
         return {
             "help": self.do_help,
             "quit": self.do_quit,
-            "exit": self.do_quit,
         }
         
     def build_aliases(self):
         return {
             "q": "quit",
+            "exit": "quit",
         }
         
     def display(self):

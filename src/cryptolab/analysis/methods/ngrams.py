@@ -14,7 +14,7 @@ NGRAM_NAMES = {
 }
 def get_ngrams(text: str, n: int = 1) -> dict:
     text = normalize(text, remove_accents = True, only_letters = True, upper = True, remove_line_breaks = True)
-    # only_letter = True logic: we are not interested in spaces or punctuation. However "THE SECRET" implies counting "ES"...to think about
+    # "only_letter = True" logic: we are not interested in spaces or punctuation. However "THE SECRET" implies counting "ES"...to think about
 
     # Edge case
     if n <= 0 or len(text) < n:
