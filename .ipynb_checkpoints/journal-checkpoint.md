@@ -4,7 +4,7 @@
 -----------------------------------------------------------
 ## Tasks
 ### To do (priority)
-- [ ] normalization protocol to add to cipher model
+- [ ] Fix bugs in Playfair
 - [ ] factory for solvers' commands and template models for folder and files solvers
 - [ ] Improve helpers (for ciphers in particular, and also for solvers...).
 - [ ] Use doc_string instead of DESCRIPTION, as it is the case for the helpers in Shell ? -> Can make things more consistent.
@@ -12,8 +12,10 @@
 - [ ] automatic solve for vigenere cipher (see pp.84-87 in book)
 - [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
 - [ ] Garde fous in functions: do it in Shell or Session ?
-- [ ] Unvalid arguments for unmap in Vigenere solver
+- [ ] Invalid arguments for 'key' and other stuff... the error catching is bad
 - [ ] Language recognition using the distance between frequencies vector (of text and statistical reference of language)
+- [ ]  set_key_state in poly,vigenere sessions/shells. Where is it used ?
+- [X]  key setting feature
 
 
 ### To do (secondary)

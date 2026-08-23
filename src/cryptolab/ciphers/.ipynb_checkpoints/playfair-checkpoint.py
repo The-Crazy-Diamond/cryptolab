@@ -72,7 +72,7 @@ class PlayfairGrid:
         return self.get_char(row_x,col_x)+self.get_char(row_y,col_y)
 
 def playfair_normalize(text,completion_char) -> str:
-    text = text.upper()
+    text = normalize(text)
     plain = text[0]
     for char in text[1:]:
         if plain[-1] == char:

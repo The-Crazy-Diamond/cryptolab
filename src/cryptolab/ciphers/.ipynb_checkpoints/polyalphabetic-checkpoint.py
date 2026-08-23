@@ -9,6 +9,7 @@ ARGS_EXAMPLE = "\"CRYPTO\" \"SECRET\" \"PASSWORD\""
 
 
 def polyalphabetic_core(func, text: str, *keys: str) -> str:
+    text = normalize(text, remove_accents = True, only_letters = False, upper = False, remove_line_breaks = True)
     if not keys:
         raise ValueError("At least one key is required")
 
@@ -34,12 +35,13 @@ def polyalphabetic_core(func, text: str, *keys: str) -> str:
         else:
             result.append(c)
 
-    return ''.join(result)
+    result_text = ''.join(result)
+    return normalize(result_text, remove_accents = True, only_letters = True, upper = True, remove_line_breaks = True)
 
 def encrypt(text: str, *keys: str) -> str:
     return polyalphabetic_core(mono.encrypt, text, *keys)
  
 
 def decrypt(text: str, *keys: str) -> str:
-    return polyalphabetic_core(mono.decrypt, text, *keys)
+    return polyalphabetic_core(mono.decrypt, text, *keys).lower()
 

@@ -7,11 +7,12 @@ ARGS_EXAMPLE = ""
 
 
 def encrypt(text: str, space_symbol: str = '/') -> str:
-    morse_coding[' '] = space_symbol
-    return ''.join(morse_coding[char.upper()] + ' ' for char in text)
+    text = text.upper()
+    morse_dict[' '] = space_symbol
+    return ''.join(morse_dict[char] + ' ' for char in text)
 
 def decrypt(text: str, space_symbol: str = '/') -> str:
-    morse_decoding[space_symbol] = ' '
+    reverse_morse_dict[space_symbol] = ' '
     start = 0
     end = 1
     plain = ''
@@ -22,8 +23,8 @@ def decrypt(text: str, space_symbol: str = '/') -> str:
         if scan == ' ': # if the scanned text is a space, just ignore it and scan what's next
             start += 1
             end += 1
-        elif scan in morse_decoding and text[end] == ' ': 
-            plain += morse_decoding[scan]
+        elif scan in reverse_morse_dict and text[end] == ' ': 
+            plain += reverse_morse_dict[scan]
             start = end + 1
             end = start + 1
         else:
@@ -32,151 +33,39 @@ def decrypt(text: str, space_symbol: str = '/') -> str:
         warnings.warn('A part of the code was not decrypted: "' + text[start:end]+'"')
     return plain
 
-morse_coding = {
- 'A': '.-',
- 'B': '-...',
- 'C': '-.-.',
- 'D': '-..',
- 'E': '.',
- 'F': '..-.',
- 'G': '--.',
- 'H': '....',
- 'I': '..',
- 'J': '.---',
- 'K': '-.-',
- 'L': '.-..',
- 'M': '--',
- 'N': '-.',
- 'O': '---',
- 'P': '.--.',
- 'Q': '--.-',
- 'R': '.-.',
- 'S': '...',
- 'T': '-',
- 'U': '..-',
- 'V': '...-',
- 'W': '.--',
- 'X': '-..-',
- 'Y': '-.--',
- 'Z': '--..',
- '0': '-----',
- '.': '.-.-.-',
- ',': '--..--',
- '?': '..--..',
- "'": '.----.',
- '!': '-.-.--',
- '/': '-..-.',
- '(': '-.--.',
- ')': '-.--.-',
- '&': '.-...',
- ':': '---...',
- ';': '-.-.-.',
- '=': '-...-',
- '+': '.-.-.',
- '-': '-....-',
- '_': '..--.-',
- '"': '.-..-.',
- '$': '...-..-',
- '@': '.--.-.',
- '1': '.----',
- '2': '..---',
- '3': '...--',
- '4': '....-',
- '5': '.....',
- '6': '-....',
- '7': '--...',
- '8': '---..',
- '9': '----.',
- '\n': '\n'
+morse_dict = {
+    # Letters
+    'A': '.-',       'B': '-...',     'C': '-.-.',     'D': '-..',
+    'E': '.',        'F': '..-.',     'G': '--.',      'H': '....',
+    'I': '..',       'J': '.---',     'K': '-.-',      'L': '.-..',
+    'M': '--',       'N': '-.',       'O': '---',      'P': '.--.',
+    'Q': '--.-',     'R': '.-.',      'S': '...',      'T': '-',
+    'U': '..-',      'V': '...-',     'W': '.--',      'X': '-..-',
+    'Y': '-.--',     'Z': '--..',
+
+    # Numbers
+    '0': '-----',    '1': '.----',    '2': '..---',    '3': '...--',
+    '4': '....-',    '5': '.....',    '6': '-....',    '7': '--...',
+    '8': '---..',    '9': '----.',
+
+    # Punctuation / Symbols
+    '.': '.-.-.-',   ',': '--..--',   '?': '..--..',   "'": '.----.',
+    '!': '-.-.--',   '/': '-..-.',    '(': '-.--.',    ')': '-.--.-',
+    '&': '.-...',    ':': '---...',   ';': '-.-.-.',   '=': '-...-',
+    '+': '.-.-.',    '-': '-....-',   '_': '..--.-',   '"': '.-..-.',
+    '$': '...-..-',  '@': '.--.-.',
+
+    # Common accented characters
+    'À': '.--.-',    'Ä': '.-.-',     'Å': '.--.-',
+    'Æ': '.-.-',     'Ç': '-.-..',    'É': '..-..',
+    'È': '.-..-',    'Ñ': '--.--',    'Ö': '---.',
+    'Ü': '..--',
+
+    # Space / word separator
+    ' ': '/',
+
+    # Returns to line
+    '\n': '\n',
 }
 
-
-morse_decoding = {
-'.-': 'A',
- '-...': 'B',
- '-.-.': 'C',
- '-..': 'D',
- '.': 'E',
- '..-.': 'F',
- '--.': 'G',
- '....': 'H',
- '..': 'I',
- '.---': 'J',
- '-.-': 'K',
- '.-..': 'L',
- '--': 'M',
- '-.': 'N',
- '---': 'O',
- '.--.': 'P',
- '--.-': 'Q',
- '.-.': 'R',
- '...': 'S',
- '-': 'T',
- '..-': 'U',
- '...-': 'V',
- '.--': 'W',
- '-..-': 'X',
- '-.--': 'Y',
- '--..': 'Z',
- '-----': '0',
- '.-.-.-': '.',
- '--..--': ',',
- '..--..': '?',
- '.----.': "'",
- '-.-.--': '!',
- '-..-.': '/',
- '-.--.': '(',
- '-.--.-': ')',
- '.-...': '&',
- '---...': ':',
- '-.-.-.': ';',
- '-...-': '=',
- '.-.-.': '+',
- '-....-': '-',
- '..--.-': '_',
- '.-..-.': '"',
- '...-..-': '$',
- '.--.-.': '@',
- '.----': '1',
- '..---': '2',
- '...--': '3',
- '....-': '4',
- '.....': '5',
- '-....': '6',
- '--...': '7',
- '---..': '8',
- '----.': '9',
- '\n': '\n'
-}
-
-# tables generated with :
-
-# def morse_tables():
-#     morse_coding = {}
-#     morse_decoding = {}
-    
-#     # setting the letters
-#     morse_letters = ['.-','-...','-.-.','-..','.','..-.','--.','....','..','.---','-.-','.-..','--','-.','---','.--.','--.-','.-.','...','-','..-','...-','.--','-..-','-.--','--..']
-    
-#     for i in range(26):
-#         char,seq = chr(i + ord('A')), morse_letters[i]
-#         morse_coding[char] = seq
-#         morse_decoding[seq] = char
-    
-#     # setting the numbers
-#     morse_numbers = ['-----','.----','..---','...--','....-','.....','-....','--...','---..','----.']
-#     for i in range(10):
-#         seq = morse_numbers[i]
-#         morse_coding[str(i)] = seq
-#         morse_decoding[seq] = str(i)
-    
-#     # setting special characters
-    
-#         special = '.,?\'!/()&:;=+-_"$@'
-#         morse_special = ['.-.-.-','--..--','..--..','.----.','-.-.--','-..-.','-.--.','-.--.-','.-...','---...','-.-.-.','-...-','.-.-.','-....-','..--.-','.-..-.','...-..-','.--.-.']
-#         for i in range(len(special)):
-#             char,seq = special[i],morse_special[i]
-#             morse_coding[char] = seq
-#             morse_decoding[seq] = char
-
-#     return morse_coding, morse_decoding
+reverse_morse_dict = {v: k for k, v in morse_dict.items()}

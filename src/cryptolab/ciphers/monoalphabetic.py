@@ -12,6 +12,7 @@ def complete_key(key: str) -> str:
     return "".join(dict.fromkeys(key))
     
 def encrypt(text: str, key: str) -> str:
+    text = normalize(text)
     key = complete_key(key)
     substitution = {}
     for i in range(26):
@@ -23,7 +24,8 @@ def encrypt(text: str, key: str) -> str:
             result.append(c)
         else:
             result.append(l)
-    return ''.join(result)
+    cipher = ''.join(result)
+    return normalize(cipher, remove_accents = True, only_letters = True, upper= True, remove_line_breaks = True)
 
 
 def decrypt(text: str, key: str) -> str:
@@ -38,4 +40,4 @@ def decrypt(text: str, key: str) -> str:
             result.append(l)
         else:
             result.append(c)
-    return ''.join(result)
+    return ''.join(result).lower()

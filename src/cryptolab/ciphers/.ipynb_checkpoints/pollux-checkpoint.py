@@ -9,13 +9,14 @@ ARGS_EXAMPLE = "\"0378AEFMOPQXYZ\" \"145BCGJNRTW\" \"269DHIKLSUV\""
 
 def pollux_keys(text: str, *args: str) -> dict:
     if len(args) != 3:
-        raise ValueError("Three keys are required : one for dots, one for dashes and one for spaces")
+        raise ValueError("Three keys are required : one for dots, one for dashes and one for spaces.")
     if common_chars(*args):
-        raise ValueError("Keys must be disjoint")
+        raise ValueError("Keys must be disjoint.")
     keys = {}
     keys['.'] = [c for c in args[0]]
     keys['-'] = [c for c in args[1]]
     keys[' '] = [c for c in args[2]]
+    keys['\n'] = ['\n']
     
     return keys
 
@@ -30,11 +31,8 @@ def encrypt(text: str, *args: str) -> str:
 def decrypt(text: str, *args: str) -> str:
     keys = pollux_keys(text, *args)
     reverse_keys = {}
-    for key in keys['.']:
-        reverse_keys[str(key)] = '.'
-    for key in keys['-']:
-        reverse_keys[str(key)] = '-'
-    for key in keys[' ']:
-        reverse_keys[str(key)] = ' '
+    for k, v in keys.items():
+        for c in v:
+            reverse_keys[str(c)] = k
         
     return morse.decrypt(''.join(reverse_keys[c] for c in text))

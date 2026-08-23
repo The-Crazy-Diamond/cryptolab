@@ -68,6 +68,11 @@ class VigenereSession(PolySession):
         for i in range(key_length):
             self._shifts[i] = None
 
+    def set_key(self, keyword: str):
+        keyword = keyword.upper()
+        for i in range(self.key_length):
+            self._shifts[i] = ord(keyword[i]) - ord('A')
+
     # Modifying methods
     def assign_shift(self, shift: int, key_index: int):
         shift = shift % 26
@@ -81,7 +86,7 @@ class VigenereSession(PolySession):
         plain = plain.lower()
 
         if (cipher not in ALPHABET) or len(cipher) > 1:
-            raise ValueError(f"'{cipher}' is not in A-Z.")
+            raise ValueError(f"'{cipher}' is in A-Z.")
         
         if (plain not in alphabet) or len(plain) > 1:
             raise ValueError(f"'{plain}' is not in a-z.")
@@ -104,7 +109,7 @@ class VigenereSession(PolySession):
         # self.checkpoint()
         
         # 3. Modify state
-        self,_shifts[key_index] = None
+        self._shifts[key_index] = None
 
     def swap(self, *args, **kwargs):
         raise NotImplementedError(

@@ -111,7 +111,7 @@ class VigenereShell(PolyShell):
         Example:
             key CRYPTO
         """
-        raise NotImplementedError
+        self.session.set_key(keyword)
 
     def do_mioc(self, key_length = None):
         """

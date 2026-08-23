@@ -1,6 +1,10 @@
 # Cryptolab
 
-A Python toolkit for classical cryptography, combining cipher implementations, cryptanalytic methods, and interactive solving tools through a command-line interface.
+A Python toolkit for classical cryptography, combining cipher implementations, cryptanalytic methods, and interactive solving tools through a command-line interface. 
+
+## Status
+
+This project is currently a work in progress. It may contain bugs and incomplete features. Please report any issues you encounter.
 
 ## Features
 
@@ -121,8 +125,6 @@ Modify my_method.py and implement the analyse() function.
 - Suggestions and automatic solving for monoalphabetic substitution, Vigenere cipher and polyalphebetic substitution
 - Hill cipher
 - Hill climbing algorithm
-
-
 
 ## Personal note
 

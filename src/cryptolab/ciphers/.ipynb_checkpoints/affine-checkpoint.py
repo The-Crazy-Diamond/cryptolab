@@ -1,4 +1,5 @@
 import math
+from cryptolab.utils.text import normalize
 
 NAME = "affine"
 DESCRIPTION = "Affine cipher. Each letter x seen as its index in the alphabet (from 0 to 25) is mapped to ax + b mod 26."
@@ -14,6 +15,8 @@ def get_keys(key_a: str, key_b: str):
     return a,b
 
 def encrypt(text: str, key_a: str, key_b: str) -> str:
+    text = normalize(text, remove_accents = True, only_letters = False, upper = False, remove_line_breaks = True)
+
     a,b = get_keys(key_a, key_b)
     result = []
     for c in text:
@@ -22,7 +25,8 @@ def encrypt(text: str, key_a: str, key_b: str) -> str:
             result.append(chr((a*(ord(c)-base)+b)%26+base))
         else:
             result.append(c)
-    return "".join(result)
+    cipher =  "".join(result)
+    return normalize(cipher, remove_accents = True, only_letters = True, upper = True, remove_line_breaks = True)
 
 
 def decrypt(text: str, key_a: str, key_b: str) -> str:
@@ -30,4 +34,4 @@ def decrypt(text: str, key_a: str, key_b: str) -> str:
     a_inv = pow(a, -1, 26)
     
     text2 = encrypt(text, 1, -b) # first be shift by -b
-    return encrypt(text2, a_inv, 0) # then we multiply by a^(-1)
+    return encrypt(text2, a_inv, 0).lower() # then we multiply by a^(-1)

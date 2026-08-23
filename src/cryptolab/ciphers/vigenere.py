@@ -9,7 +9,8 @@ ARGS_EXAMPLE = "KEY"
 
 
 def encrypt(text: str, key: str) -> str:
-    key = normalize(key)
+    key = normalize(key, remove_accents = True, only_letters = True, upper= True, remove_line_breaks = True)
+    text = normalize(text, remove_accents = True, only_letters = False, upper= False, remove_line_breaks = True)
     shifts = [ord(c) - ord('A') for c in key]
     l = len(key)
     index = 0
@@ -17,13 +18,17 @@ def encrypt(text: str, key: str) -> str:
     for c in text:
         if c.isalpha():
             base = ord('A') if c.isupper() else ord('a')
-            result.append(chr((ord(c)-base+shifts[index])%26+base))
+            result.append(chr((ord(c)-base+shifts[index]) % 26+base))
             index = (index + 1) % l
         else:
             result.append(c)
-    return "".join(result)
+    cipher = "".join(result)
+    return normalize(cipher, remove_accents = True, only_letters = True, upper= True, remove_line_breaks = True)
 
 
 def decrypt(text: str, key: str) -> str:
-    reverse_key = "".join([chr( 26 - (ord(c) - ord('A')) + ord('A')) for c in key.upper()])
-    return encrypt(text,reverse_key)
+    key = normalize(key, remove_accents = True, only_letters = True, upper= True, remove_line_breaks = True)
+    text = normalize(text, remove_accents = True, only_letters = False, upper= False, remove_line_breaks = True)
+    reverse_key = "".join([chr( 26 - (ord(c) - ord('A')) + ord('A')) for c in key])
+    plain = encrypt(text,reverse_key)
+    return plain.lower()
