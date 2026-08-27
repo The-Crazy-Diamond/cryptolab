@@ -13,9 +13,10 @@
 - [ ] Attack by known plaintext solver (print three lines: ciphertext, key, plaintext)
 - [ ] Garde fous in functions: do it in Shell or Session ?
 - [ ] Invalid arguments for 'key' and other stuff... the error catching is bad
-- [ ] Language recognition using the distance between frequencies vector (of text and statistical reference of language)
 - [ ]  set_key_state in poly,vigenere sessions/shells. Where is it used ?
 - [X]  key setting feature
+- [ ]  make normalizations cleaner for ciphers: default should be secure option (remove spaces, punct, etc...) but a weaker option (keep punctuation, lower/uppercases, spaces) should exist in order to create
+- [ ]  Move from current one screen view to a TUI
 
 
 ### To do (secondary)
@@ -23,6 +24,7 @@
 - [ ] Create class Ciphertext to deal with every annoying things linked with formatting, spaces and punctation management
 - [ ] Eventually move PlayfairGrid into utils and making it a more general class (PlayfairGrid could inherit from it)
 - [ ] break_long_words issue in utils/formatting.py
+- [ ] Language recognition using the distance between frequencies vector (of text and statistical reference of language)
 - [ ] Adapt arguments input by choosing the most relevant between *args and **kwargs . example:
 ```
 def func(*args, **kwargs):

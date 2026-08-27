@@ -1,5 +1,6 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import normalize
+from cryptolab.analysis.solvers.session import Session
 
 import string
 
@@ -12,30 +13,24 @@ def initial_mapping() -> dict[str, str]:
     # return {c: c for c in " \n" + string.punctuation}
 
     
-class MonoSession:
+class MonoSession(Session):
     """
-    MonoSession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through a substitution mapping
+    Tool to decipher a monoalphabetic ciphertext by determining progressively the mapping.
     """
     TOOL = "monoalphabetic"
     def __init__(self, ciphertext: str) -> None:
-        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True) 
+        super().__init__(ciphertext)
         self._mapping = initial_mapping()
         self.history = []
         self.future = []
 
     # Getters
-    @property
-    def ciphertext(self):
-        return self._ciphertext
         
     @property
     def mapping(self):
         return self._mapping.copy()
 
     # Other properties
-    @property
-    def length(self)-> int:
-        return len(self._ciphertext)
             
     def get_plain_char(self, c):
         if c in self._mapping:
@@ -45,8 +40,7 @@ class MonoSession:
         else:
             return c
         
-    @property
-    def plaintext(self):
+    def compute_plaintext(self) -> str:
         # return "".join(self._mapping.get(c, '_') for c in self._ciphertext)
         out = []
     
@@ -63,18 +57,13 @@ class MonoSession:
     def plain_chars_to_assign(self) -> str:
         return ''.join(c for c in alphabet if c not in self._mapping.values())
 
+     
     # Modifying methods
     def assign(self, cipher: str, plain: str):
         # 1. Validate
-        cipher = cipher.upper()
-        plain = plain.lower()
-
-        if (cipher not in ALPHABET) or len(cipher) > 1:
-            raise ValueError(f"'{cipher}' is not in A-Z.")
+        cipher = self.validate_cipher_char(cipher)
+        plain = self.validate_plain_char(plain)   
         
-        if (plain not in alphabet) or len(plain) > 1:
-            raise ValueError(f"'{plain}' is not in a-z.")
-    
         for c, p in self._mapping.items():
             if p == plain and c != cipher:
                 raise ValueError(f"'{plain}' is already assigned to '{c}'.")
@@ -85,9 +74,7 @@ class MonoSession:
 
     def unassign(self, cipher: str):
         # 1. Validate
-        cipher = cipher.upper() 
-        if (cipher not in ALPHABET) or len(cipher) > 1:
-            raise ValueError(f"'{cipher}' is not in A-Z.")
+        cipher = self.validate_cipher_char(cipher)
         if cipher not in self._mapping:
             raise ValueError(f"'{cipher}' is not assigned yet.")
         # 2. Save current state    
@@ -100,8 +87,7 @@ class MonoSession:
         cipher1 = cipher1.upper()
         cipher2 = cipher2.upper()
         for cipher in [cipher1,cipher2]:
-            if (cipher not in ALPHABET) or len(cipher) > 1:
-                raise ValueError(f"'{cipher}' is not in A-Z.")
+            cipher = self.validate_cipher_char(cipher)
             if cipher not in self._mapping:
                 raise ValueError(f"'{cipher}' is not assigned yet.")
         # 2. Save current state

@@ -1,14 +1,16 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import normalize
+from cryptolab.analysis.solvers.session import Session
 from cryptolab.analysis.solvers.monoalphabetic.session import MonoSession
+
                     
-class PolySession:
+class PolySession(Session):
     """
     PolySession is essentially defined by a ciphertext (in uppercases) and a plaintext (in lowercases) progressively determined through substitution mappings after finding the key length. 
     """
     TOOL = "polyalphabetic"
     def __init__(self, ciphertext: str) -> None:
-        self._ciphertext = normalize(ciphertext, remove_accents = True, only_letters = False, upper = True, remove_line_breaks = True)
+        super().__init__(ciphertext)
         self._key_length = None
         self._active_index = None
         self._init_key_state()
@@ -19,10 +21,7 @@ class PolySession:
         self._mono_sessions = {}
         
     # Getters    
-    @property
-    def ciphertext(self):
-        return self._ciphertext
-        
+       
     @property
     def key_length(self)-> int:
         if self.key_length_defined:
@@ -41,12 +40,8 @@ class PolySession:
         return self._mono_sessions[key_index]
 
     # Other properties
-    @property
-    def length(self)-> int:
-        return len(self._ciphertext)
             
-    @property
-    def plaintext(self):
+    def compute_plaintext(self) -> str:
         if self.key_length_defined:
             out = []
             for index in range(self.length):
@@ -85,61 +80,19 @@ class PolySession:
     def assign(self, cipher: str, plain: str, key_index: int):
         self.key_length_check()
         self._mono_sessions[key_index].assign(cipher, plain)
-        
-        # # 1. Validate
-        # cipher = cipher.upper()
-        # plain = plain.lower()
-        # # 2. Save current state        
-        # self.checkpoint()
-        # # 3. Modify state
-        # self._mapping[cipher] = plain
 
     def unassign(self, cipher: str, key_index: int):
         self.key_length_check()
         self._mono_sessions[key_index].unassign(cipher)
         
-        # # 1. Validate
-        # cipher = cipher.upper() 
-        # if (cipher not in ALPHABET) or len(cipher) > 1:
-        #     raise ValueError(f"'{cipher}' is not in A-Z.")
-        # if cipher not in self._mapping:
-        #     raise ValueError(f"'{cipher}' is not assigned yet.")
-        # # 2. Save current state    
-        # self.checkpoint()
-        # # 3. Modify state
-        # self._mapping.pop(cipher)
-
     def swap(self, cipher1: str, cipher2: str, key_index: int):
         self.key_length_check()
-        self._mono_sessions[key_index].swap(cipher1, cipher2)
-
-        
-        # # 1. Validate
-        # cipher1 = cipher1.upper()
-        # cipher2 = cipher2.upper()
-        # for cipher in [cipher1,cipher2]:
-        #     if (cipher not in ALPHABET) or len(cipher) > 1:
-        #         raise ValueError(f"'{cipher}' is not in A-Z.")
-        #     if cipher not in self._mapping:
-        #         raise ValueError(f"'{cipher}' is not assigned yet.")
-        # # 2. Save current state
-        # self.checkpoint()
-        # # 3. Modify state
-        # self._mapping[cipher1], self._mapping[cipher2] = (
-        #     self._mapping[cipher2],
-        #     self._mapping[cipher1],
-        # )                
+        self._mono_sessions[key_index].swap(cipher1, cipher2)         
         
     def reset(self) -> None:
         self._key_length = None
         self._active_index = None
         self.reset_key_state()
-    #     # 1. Validate
-    #     # nothing to do
-    #     # 2. Save current state
-    #     self.checkpoint()
-    #     # 3. Modify state
-    #     self._mapping = initial_mapping()
 
     def reset_key_state(self):
         self._mono_sessions = {}

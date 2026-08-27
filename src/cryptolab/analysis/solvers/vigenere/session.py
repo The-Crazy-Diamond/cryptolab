@@ -1,5 +1,6 @@
 from cryptolab.utils.alphabet import ALPHABET, alphabet
 from cryptolab.utils.text import normalize
+from cryptolab.analysis.solvers.session import Session
 from cryptolab.analysis.solvers.polyalphabetic.session import PolySession
 from cryptolab.analysis.solvers.monoalphabetic.session import MonoSession
                     
@@ -27,8 +28,7 @@ class VigenereSession(PolySession):
         return self._shifts[key_index]
 
     
-    @property
-    def plaintext(self):
+    def compute_plaintext(self) -> str:
         out = []
         letter_index = 0
     
@@ -82,14 +82,8 @@ class VigenereSession(PolySession):
         self.key_length_check()
         
         # 1. Validate
-        cipher = cipher.upper()
-        plain = plain.lower()
-
-        if (cipher not in ALPHABET) or len(cipher) > 1:
-            raise ValueError(f"'{cipher}' is in A-Z.")
-        
-        if (plain not in alphabet) or len(plain) > 1:
-            raise ValueError(f"'{plain}' is not in a-z.")
+        cipher = self.validate_cipher_char(cipher)
+        plain = self.validate_plain_char(plain)
     
         # 2. Save current state        
         # self.checkpoint()
