@@ -68,7 +68,7 @@ class VigenereShell(PolyShell):
             map 17 2
         """
         key_index = self.treat_index(key_index)
-        shift = int(shift) % 26
+        shift = int(shift)
         self.session.assign_shift(shift, key_index)
         self.status = f"Set shift to {shift} at indices {key_index} mod {self.session.key_length}"
 

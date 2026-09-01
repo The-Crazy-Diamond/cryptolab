@@ -60,8 +60,8 @@ class PolySession(Session):
 
     # Setters
     def set_key_length(self, key_length: int):
-        if key_length < 0:
-            raise ValueError("Key length must be non negative.")
+        if key_length < 1:
+            raise ValueError("Key length must be positive.")
         self._key_length = key_length
         self.set_key_state(key_length)
         self._active_index = 0

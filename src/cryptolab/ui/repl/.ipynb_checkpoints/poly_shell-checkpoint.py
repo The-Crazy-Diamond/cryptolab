@@ -33,7 +33,7 @@ class PolyShell(Shell):
             "ioc": self.do_ioc,
 
             "keylen": self.do_set_key_length,
-            "active": self.do_set_active_index,
+            "index": self.do_set_active_index,
             "show": self.do_show,
             # "undo": self.do_undo,
             # "redo": self.do_redo,
@@ -55,7 +55,7 @@ class PolyShell(Shell):
             "freq": "frequencies",
 
             "kl": "keylen",
-            "a": "active",
+            "i": "index",
         })
 
         return aliases
