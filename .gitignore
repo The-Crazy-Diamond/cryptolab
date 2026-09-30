@@ -26,7 +26,14 @@ htmlcov/
 # OS files
 .DS_Store
 
-# Others
+# Jupyter
+.ipynb_checkpoints/
+
+# Editor temporary files
+*.swp
+*.swo
+
+# Project-specific files
 journal.md
 layout.txt
 sandbox.ipynb
