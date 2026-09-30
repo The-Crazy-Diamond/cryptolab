@@ -269,13 +269,3 @@ class MonoShell(Shell):
         self.session = session
         self.status = f"Session loaded from '{filename}'."
         
-        
-    
-"""
-Commands to add:
-
-[] suggest
-[] score
-[] dictionary
-[] auto
-"""
